@@ -1,8 +1,1 @@
-# 统一用 LF，避免 Windows 检出后整仓库 diff 噪声
-* text=auto eol=lf
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.ico binary
-*.zip binary
-*.sqlite binary
+.gitattributes

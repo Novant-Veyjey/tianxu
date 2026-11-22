@@ -1,3 +1,1 @@
-tianxu-demo
-build: app.2219a285
-built: 2026-11-18
+demo/version.txt
