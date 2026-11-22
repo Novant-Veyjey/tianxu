@@ -1,1 +1,1401 @@
-public/index.html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f2ec">
+<link rel="icon" type="image/png" href="/assets/logo-mark.png">
+<title>田序 · 生产管理台</title>
+<style>
+:root{
+  --bg:#ecede5;--panel:#f4f5ef;--card:#fbfcf7;--raised:#eef1e5;
+  --ink:#22312a;--ink2:#516255;--ink3:#7b8a7f;
+  --line:#e2e6d8;--line2:#e9ecdf;
+  --accent:#244d3b;--accent-deep:#1b3a2c;--accent-soft:#e3ebd5;
+  --pos:#15803d;--neg:#b42318;--warn:#a87c3f;
+  --r-sm:9px;--r-md:11px;--r-lg:16px;--r-xl:20px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --contour-soft:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='560' viewBox='0 0 560 560' fill='none' stroke='%232f6b48' stroke-opacity='.045' stroke-width='1.2'%3E%3Cpath d='M-60 150C50 108 120 190 220 176S400 92 500 122 620 196 700 158'/%3E%3Cpath d='M-60 214C50 172 132 254 232 240S406 158 508 188 624 262 704 224'/%3E%3Cpath d='M-60 278C56 236 140 320 240 306S414 224 516 254 630 328 708 290'/%3E%3Cpath d='M-60 342C62 300 148 384 248 370S422 290 524 320 636 394 712 356'/%3E%3Cpath d='M-60 406C68 364 156 448 256 434S430 356 532 386 642 460 716 422'/%3E%3Cpath d='M-60 470C74 428 164 512 264 498S438 422 540 452 648 526 720 488'/%3E%3Cpath d='M-60 534C80 492 172 576 272 562S446 488 548 518 654 592 724 554'/%3E%3C/svg%3E");
+  --contour-light:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='560' viewBox='0 0 560 560' fill='none' stroke='%23ffffff' stroke-opacity='.075' stroke-width='1.2'%3E%3Cpath d='M-60 150C50 108 120 190 220 176S400 92 500 122 620 196 700 158'/%3E%3Cpath d='M-60 214C50 172 132 254 232 240S406 158 508 188 624 262 704 224'/%3E%3Cpath d='M-60 278C56 236 140 320 240 306S414 224 516 254 630 328 708 290'/%3E%3Cpath d='M-60 342C62 300 148 384 248 370S422 290 524 320 636 394 712 356'/%3E%3Cpath d='M-60 406C68 364 156 448 256 434S430 356 532 386 642 460 716 422'/%3E%3Cpath d='M-60 470C74 428 164 512 264 498S438 422 540 452 648 526 720 488'/%3E%3Cpath d='M-60 534C80 492 172 576 272 562S446 488 548 518 654 592 724 554'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent-deep)}
+h1,h2,h3,p{margin:0}
+svg{display:block}
+.ico{width:18px;height:18px;flex:0 0 auto}
+
+/* 应用骨架 */
+.shell{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:228px;flex:0 0 228px;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:20px 12px 16px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 20px}
+.brand-mark{width:36px;height:36px;border-radius:10px;overflow:hidden;background:#fff;border:1px solid var(--line);flex:0 0 auto}
+.brand-mark img{width:100%;height:100%;object-fit:contain;display:block}
+.brand-text{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.brand-text b{font-size:15px;font-weight:600;letter-spacing:0}
+.brand-text small{font-size:11px;color:var(--ink3);margin-top:2px}
+.nav{display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1}
+.nav-label{font-size:10.5px;color:var(--ink3);padding:18px 10px 6px;letter-spacing:.12em}
+.nav-label:first-child{padding-top:4px}
+.nav button{display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;border:0;border-radius:var(--r-sm);background:transparent;color:var(--ink2);font-size:13.5px;text-align:left;transition:background .15s var(--ease),color .15s var(--ease)}
+.nav button .ico{color:var(--ink3);transition:color .15s var(--ease)}
+.nav button:hover{background:#f2ede5;color:var(--ink)}
+.nav button.active{background:var(--accent-soft);color:var(--accent-deep);font-weight:500}
+.nav button.active .ico{color:var(--accent)}
+.nav .nav-meta{margin-left:auto;font-size:11px;color:var(--ink3);font-variant-numeric:tabular-nums;background:#f3eee6;border-radius:5px;padding:1px 6px}
+.nav .nav-meta[data-empty="1"]{display:none}
+.sidebar-foot{border-top:1px solid var(--line);padding-top:12px;margin-top:8px}
+.user-card{display:flex;align-items:center;gap:10px;width:100%;padding:8px;border:0;border-radius:var(--r-md);background:transparent;text-align:left;transition:background .15s var(--ease)}
+.user-card:hover{background:#f2ede5}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--accent-deep);display:grid;place-items:center;font-size:13px;font-weight:600;flex:0 0 auto}
+.user-card span:last-child{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+.user-card b{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-card small{font-size:11px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.workspace{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh}
+.topbar{height:64px;flex:0 0 64px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 32px;border-bottom:1px solid var(--line);background:rgba(245,242,236,.86);backdrop-filter:blur(8px);position:relative;z-index:5}
+.crumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink3);min-width:0}
+.crumb b{font-weight:500;color:var(--ink);white-space:nowrap}
+.crumb i{font-style:normal;color:#c3bbae}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+#app{flex:1;overflow-y:auto;padding:28px 32px 56px;scroll-behavior:smooth;background-image:var(--contour-soft);background-size:620px 620px;background-attachment:fixed;background-position:right -80px top -60px}
+#app::-webkit-scrollbar{width:10px}
+#app::-webkit-scrollbar-thumb{background:#ddd5c8;border-radius:8px;border:3px solid var(--bg)}
+.page{max-width:1440px;margin:0 auto;animation:rise .32s var(--ease)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* 通用组件 */
+.dash-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px;padding:24px 26px;border-radius:18px;color:#f4f1e9;background:radial-gradient(120% 160% at 8% 0%,#2f4a37 0%,#1f2e25 58%,#18241d 100%);box-shadow:0 20px 44px -34px rgba(24,36,29,.7)}
+.dash-hero::before{content:"";position:absolute;inset:0;background-image:var(--contour-light);background-size:520px 520px;background-position:right -40px top -60px;pointer-events:none}
+.dash-hero>*{position:relative;z-index:1}
+.dash-hero .eyebrow{font-size:11.5px;letter-spacing:.14em;color:#a9c9a2}
+.dash-hero h1{font-size:23px;line-height:1.25;font-weight:500;letter-spacing:-.01em;margin-top:7px;color:#fff}
+.dash-hero p.sub{font-size:12.5px;color:rgba(241,238,230,.66);margin-top:6px}
+.dash-hero .page-head-actions{align-items:center}
+.dash-hero .btn{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22);color:#fff}
+.dash-hero .btn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3)}
+.dash-hero .btn.primary{background:#fff;border-color:#fff;color:var(--accent-deep)}
+.dash-hero .btn.primary:hover{background:#f2f6f1;border-color:#f2f6f1}
+
+
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}
+.page-head h1{font-size:26px;line-height:1.2;font-weight:500;letter-spacing:-.01em}
+.page-head>div:first-child::before{content:"TIANXU / FIELD OPERATIONS";display:block;font-size:9.5px;letter-spacing:.16em;color:var(--ink3);margin-bottom:6px}
+    .page-head p{font-size:13px;color:var(--ink3);margin-top:6px}
+.page-head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);color:var(--ink);font-size:13px;font-weight:500;white-space:nowrap;transition:background .15s var(--ease),border-color .15s var(--ease),color .15s var(--ease),transform .12s var(--ease)}
+.btn:hover{background:var(--raised);border-color:rgba(31,27,22,.14)}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+.btn.ghost{background:transparent}
+.btn.block{width:100%}
+.btn.small{height:32px;padding:0 10px;font-size:12px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn .ico{width:16px;height:16px}
+.link{border:0;background:none;padding:2px 4px;border-radius:4px;color:var(--accent-deep);font-size:12.5px;font-weight:500}
+.link:hover{background:var(--accent-soft)}
+.link.danger{color:var(--neg)}
+.link.danger:hover{background:#fdecea}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(31,27,22,.03);transition:box-shadow .2s var(--ease),border-color .2s var(--ease)}
+.card:hover{box-shadow:0 14px 34px -26px rgba(31,27,22,.4);border-color:rgba(31,27,22,.12)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;border-bottom:1px solid var(--line2)}
+.card-head h2{font-size:14px;font-weight:500}
+.card-head .sub{font-size:12px;color:var(--ink3);margin-top:3px}
+.card-body{padding:20px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:22px;background:transparent;border:0;ne);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(31,27,22,.03)}
+.stat{background:var(--card);border:1px solid var(--line);border-right:1px solid var(--line);border-radius:16px;padding:18px 20px 17px;min-width:0;box-shadow:0 1px 2px rgba(27,58,44,.03)}
+.stat .label{font-size:11.5px;letter-spacing:.05em;color:var(--ink3)}
+.stats .stat:last-child{border-right:1px solid var(--line)}
+.stat .value{font-size:29px;line-height:1.12;font-weight:500;margin-top:9px;font-variant-numeric:tabular-nums;letter-spacing:-.01em;white-space:nowrap}
+.stat .value small{font-size:13px;color:var(--ink3);font-weight:400;margin-left:4px}
+.stat .meta{font-size:12px;color:var(--ink3);margin-top:6px}
+.stat .meta.pos{color:var(--pos)}
+.stat .meta.warn{color:var(--warn)}
+.grid-main{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:20px;margin-bottom:20px;align-items:start}
+.grid-half{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:20px}
+.muted{color:var(--ink3)}
+.num{font-variant-numeric:tabular-nums}
+
+/* 表格 */
+.table-wrap{overflow-x:auto}
+.table{width:100%;border-collapse:collapse;font-size:13px}
+.table th{text-align:left;font-size:11.5px;font-weight:500;color:var(--ink3);letter-spacing:.03em;padding:11px 22px;border-bottom:1px solid var(--line);white-space:nowrap;background:#fbf9f4}
+.table td{padding:15px 22px;border-bottom:1px solid var(--line2);vertical-align:middle}
+.table tr:last-child td{border-bottom:0}
+.table tbody tr{transition:background .12s var(--ease)}
+.table tbody tr:hover{background:#fbf8f2}
+.table td .cell-title{display:block;font-weight:500;color:var(--ink);white-space:nowrap}
+.table td .cell-sub{display:block;font-size:12px;color:var(--ink3);margin-top:2px;white-space:nowrap}
+.table .actions{display:flex;justify-content:flex-end;gap:4px;white-space:nowrap}
+.table .right{text-align:right}
+.table .nowrap{white-space:nowrap}
+
+/* 列表 */
+.list{padding:4px 20px 8px}
+.list-row{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--line2)}
+.list-row:last-child{border-bottom:0}
+.list-row .grow{flex:1;min-width:0}
+.list-row b{display:block;font-size:13px;font-weight:500;line-height:1.45;overflow-wrap:anywhere}
+.list-row small{display:block;font-size:12px;color:var(--ink3);margin-top:3px}
+.list-row .side{flex:0 0 auto;text-align:right}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:6px;flex:0 0 auto}
+.dot.warn{background:var(--warn)}
+.dot.red{background:var(--neg)}
+.dot.gray{background:#c3bbae}
+.badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:6px;background:var(--raised);color:var(--ink2);font-size:12px;font-weight:500;white-space:nowrap}
+.badge.pos{background:var(--accent-soft);color:var(--accent-deep)}
+.badge.warn{background:#fbf0dd;color:#8a5a12}
+.badge.red{background:#fdecea;color:#9f2318}
+.badge.gray{background:#f1ede6;color:var(--ink3)}
+.empty{padding:36px 20px;text-align:center;color:var(--ink3);font-size:13px;line-height:1.7}
+.empty b{display:block;color:var(--ink);font-size:14px;font-weight:500;margin-bottom:4px}
+.notice{padding:12px 14px;border:1px solid #ecdfc3;background:#fbf5e8;border-radius:var(--r-md);color:#7a5720;font-size:12.5px;line-height:1.65;margin-bottom:16px}
+.notice.pos{border-color:#d9e5d6;background:#f0f5ee;color:#33603f}
+.notice code{font-family:ui-monospace,Consolas,monospace;font-size:12px}
+.loading{padding:64px 20px;text-align:center;color:var(--ink3);font-size:13px}
+.error{padding:20px 22px;border:1px solid #f0d5d2;background:#fdf3f2;border-radius:var(--r-lg);color:#8f2f26;font-size:13px;line-height:1.8}
+
+/* 环境曲线 */
+.chart-card .card-body{padding:18px 20px 12px}
+.chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:8px}
+.chart-head .now{text-align:right;flex:0 0 auto}
+.chart-head .now b{font-size:24px;font-weight:500;font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+.chart-head .now span{font-size:12px;color:var(--ink3)}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart .grid-line{stroke:rgba(31,27,22,.08);stroke-width:1}
+.chart .axis-text{fill:#8b8174;font-size:11px;font-family:inherit}
+.chart .series{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .area{fill:rgba(47,107,72,.07)}
+.chart .point{fill:var(--card);stroke:var(--accent);stroke-width:1.6}
+.chart .point.last{fill:var(--accent);stroke:var(--card);stroke-width:2}
+.chart .avg{stroke:rgba(31,27,22,.22);stroke-width:1;stroke-dasharray:4 4}
+.chart-empty{padding:48px 20px;text-align:center;color:var(--ink3);font-size:13px;line-height:1.7}
+.legend{display:flex;align-items:center;gap:16px;margin-top:4px;font-size:12px;color:var(--ink3);flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:2px;background:var(--accent);margin-right:6px;vertical-align:middle}
+.legend i.dash{background:repeating-linear-gradient(90deg,rgba(31,27,22,.3) 0 4px,transparent 4px 8px);height:1px}
+
+/* 阶段点：批次生长阶段，本项目专有标识 */
+.stage{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.stage-dots{display:inline-flex;gap:3px;align-items:center}
+.stage-dots i{width:6px;height:6px;border-radius:50%;background:#e2dcd1;display:block}
+.stage-dots i.on{background:var(--accent)}
+.stage span{font-size:12.5px;color:var(--ink2)}
+
+/* 搜索与表单 */
+.search{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);color:var(--ink3);min-width:220px}
+.search .ico{width:16px;height:16px}
+.search input{border:0;outline:0;background:transparent;width:100%;font-size:13px;color:var(--ink)}
+.search input::placeholder{color:#a89f92}
+.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.field label{display:block;font-size:12px;color:var(--ink3);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;border:1px solid #ddd5c8;border-radius:var(--r-sm);padding:9px 11px;background:#fffefa;outline:0;font-size:13px;color:var(--ink);transition:border-color .15s var(--ease),box-shadow .15s var(--ease)}
+.field textarea{min-height:88px;resize:vertical;line-height:1.6}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,107,72,.12)}
+.field-hint{display:block;font-size:12px;color:var(--ink3);margin-top:6px;line-height:1.6}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid .full{grid-column:1/-1}
+.form-stack{display:flex;flex-direction:column;gap:16px}
+.pwd-wrap{position:relative}
+.pwd-wrap input{padding-right:42px}
+.pwd-toggle{position:absolute;right:4px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--ink3);height:30px;padding:0 8px;display:flex;align-items:center;justify-content:center;border-radius:6px}
+.pwd-toggle:hover{background:var(--raised)}
+.role-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.role-option{min-height:40px;display:flex;align-items:center;justify-content:center;padding:6px 10px;border:1px solid #ddd5c8;border-radius:var(--r-sm);background:#fffefa;font-size:12.5px;color:var(--ink2);text-align:center;cursor:pointer;transition:border-color .15s var(--ease),background .15s var(--ease),color .15s var(--ease)}
+.role-option:hover{border-color:#b9c9b6}
+.role-option.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-deep);font-weight:500}
+
+/* 弹层 */
+.sheet-mask{position:fixed;inset:0;background:rgba(31,27,22,.38);z-index:100;opacity:0;pointer-events:none;transition:opacity .2s var(--ease);display:flex;align-items:center;justify-content:center;padding:28px}
+.sheet-mask.open{opacity:1;pointer-events:auto}
+.sheet{width:min(760px,100%);max-height:86vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r-xl);padding:24px;box-shadow:0 24px 64px rgba(31,27,22,.18);transform:translateY(10px) scale(.99);transition:transform .24s var(--ease)}
+.sheet-mask.open .sheet{transform:none}
+.sheet h3{font-size:18px;font-weight:500;margin:0}
+.sheet>p{font-size:13px;color:var(--ink3);margin:6px 0 20px}
+.sheet-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end}
+.sheet-actions .btn{min-width:96px}
+.sheet .notice{margin-top:0}
+#sheetBody .field+.field{margin-top:16px}
+.toast{position:fixed;left:50%;bottom:32px;z-index:220;transform:translate(-50%,14px);opacity:0;pointer-events:none;background:#241f19;color:#fffdf8;padding:10px 16px;border-radius:var(--r-sm);font-size:13px;white-space:nowrap;transition:opacity .18s var(--ease),transform .18s var(--ease);box-shadow:0 12px 32px rgba(31,27,22,.18)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* 账号页 */
+.account-table td{padding-top:16px;padding-bottom:16px}
+.account-who{display:flex;align-items:center;gap:10px;min-width:0}
+.account-who .avatar{width:30px;height:30px;font-size:12px}
+.account-who b{display:block;font-size:13px;font-weight:500}
+.account-who small{display:block;font-size:12px;color:var(--ink3)}
+.select{height:32px;border:1px solid #ddd5c8;border-radius:var(--r-sm);background:#fffefa;padding:0 8px;font-size:12.5px;color:var(--ink);outline:0}
+.select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,107,72,.12)}
+.perm-wrap{overflow:auto;padding:2px 20px 6px}
+.perm-table{width:100%;border-collapse:collapse;font-size:12.5px;color:var(--ink2)}
+.perm-table thead th{text-align:left;font-weight:500;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.perm-table thead th:not(:first-child){text-align:center}
+.perm-table tbody th{text-align:left;font-weight:400;padding:9px 12px;border-bottom:1px solid var(--line2);white-space:nowrap}
+.perm-table tbody th b{font-weight:500;color:var(--ink);margin-right:8px}
+.perm-table tbody th span{color:var(--muted);font-size:11.5px}
+.perm-table td{text-align:center;padding:9px 12px;border-bottom:1px solid var(--line2)}
+.perm-table tbody tr:last-child th,.perm-table tbody tr:last-child td{border-bottom:0}
+.perm{display:inline-block;min-width:46px;padding:2px 8px;border-radius:5px;font-size:11.5px;line-height:1.6}
+.perm.rw{background:var(--accent-soft);color:var(--accent-deep)}
+.perm.r{background:#f1f3f1;color:var(--ink2)}
+.perm.w{background:#fbf1df;color:#8a5a12}
+.perm.none{color:var(--muted)}
+.perm-note{padding:0 20px 16px;font-size:12px;color:var(--muted)}
+
+/* 溯源 */
+.trace-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:20px;align-items:start}
+.timeline{padding:8px 20px 20px}
+.event{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:12px;padding:12px 0;position:relative}
+.event:not(:last-child):after{content:"";position:absolute;left:6px;top:30px;bottom:-4px;width:1px;background:var(--line)}
+.event .dot{width:9px;height:9px;margin-top:5px;position:relative;z-index:1;background:var(--accent)}
+.event b{display:block;font-size:13px;font-weight:500}
+.event p{font-size:12px;color:var(--ink3);margin-top:2px;line-height:1.6}
+.event time{font-size:12px;color:var(--ink3);white-space:nowrap}
+.qr{width:144px;height:144px;padding:8px;border:1px solid var(--line);border-radius:var(--r-md);background:#fff;margin:0 auto}
+.qr img{width:100%;height:100%;display:block}
+.qr-box{text-align:center;padding:20px}
+.qr-box .hint{font-size:12px;color:var(--ink3);margin-top:12px;line-height:1.6}
+
+/* 市场 */
+.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:24px}
+.product-card{display:flex;flex-direction:column;padding:18px}
+.product-head{display:flex;align-items:flex-start;gap:12px}
+.product-icon{width:44px;height:44px;border-radius:var(--r-md);background:var(--accent-soft);display:grid;place-items:center;overflow:hidden;flex:0 0 auto;font-size:22px;color:var(--accent-deep)}
+.product-icon img{width:100%;height:100%;object-fit:cover}
+.product-icon svg{width:24px;height:24px}
+.product-head .grow{flex:1;min-width:0}
+.product-head h3{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.product-head p{font-size:12px;color:var(--ink3);margin-top:3px}
+.product-figures{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.product-figures div{background:#faf7f1;border-radius:var(--r-sm);padding:8px 10px}
+.product-figures span{display:block;font-size:11px;color:var(--ink3)}
+.product-figures b{display:block;font-size:13px;font-weight:500;margin-top:2px;font-variant-numeric:tabular-nums}
+.product-desc{font-size:12px;color:var(--ink3);margin-top:12px;line-height:1.6;min-height:19px}
+.product-foot{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line2)}
+.qr-mini{width:44px;height:44px;padding:3px;border:1px solid var(--line);border-radius:6px;background:#fff;flex:0 0 auto}
+.qr-mini img{width:100%;height:100%;display:block}
+.product-foot .hint{font-size:11px;color:var(--ink3);flex:1;line-height:1.45}
+.product-actions{display:flex;gap:2px;flex-wrap:wrap;justify-content:flex-end}
+
+/* 图标选择 */
+.preset-icons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.preset-icons button{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);background:#fffefa;color:var(--accent-deep)}
+.preset-icons button svg{width:22px;height:22px}
+.preset-icons button.active{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(47,107,72,.1)}
+.icon-preview{width:80px;height:80px;border-radius:var(--r-md);background:var(--accent-soft);display:grid;place-items:center;overflow:hidden;margin:4px auto 16px;font-size:40px;color:var(--accent-deep)}
+.icon-preview img{width:100%;height:100%;object-fit:cover}
+.icon-preview svg{width:44px;height:44px}
+
+/* 登录 */
+body.on-login .sidebar,body.on-login .topbar{display:none}
+body.on-login .workspace{height:100vh}
+body.on-login #app{padding:0;overflow:auto}
+body.on-login .m-tabbar{display:none}
+.auth{--auth-contour-soft:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='560' viewBox='0 0 560 560' fill='none' stroke='%232f6b48' stroke-opacity='.05' stroke-width='1.2'%3E%3Cpath d='M-60 150C50 108 120 190 220 176S400 92 500 122 620 196 700 158'/%3E%3Cpath d='M-60 214C50 172 132 254 232 240S406 158 508 188 624 262 704 224'/%3E%3Cpath d='M-60 278C56 236 140 320 240 306S414 224 516 254 630 328 708 290'/%3E%3Cpath d='M-60 342C62 300 148 384 248 370S422 290 524 320 636 394 712 356'/%3E%3Cpath d='M-60 406C68 364 156 448 256 434S430 356 532 386 642 460 716 422'/%3E%3Cpath d='M-60 470C74 428 164 512 264 498S438 422 540 452 648 526 720 488'/%3E%3Cpath d='M-60 534C80 492 172 576 272 562S446 488 548 518 654 592 724 554'/%3E%3C/svg%3E");--auth-contour:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640' viewBox='0 0 640 640' fill='none' stroke='%23ffffff' stroke-opacity='.06' stroke-width='1.3'%3E%3Cpath d='M-60 150C50 108 120 190 220 176S400 92 500 122 620 196 700 158'/%3E%3Cpath d='M-60 214C50 172 132 254 232 240S406 158 508 188 624 262 704 224'/%3E%3Cpath d='M-60 278C56 236 140 320 240 306S414 224 516 254 630 328 708 290'/%3E%3Cpath d='M-60 342C62 300 148 384 248 370S422 290 524 320 636 394 712 356'/%3E%3Cpath d='M-60 406C68 364 156 448 256 434S430 356 532 386 642 460 716 422'/%3E%3Cpath d='M-60 470C74 428 164 512 264 498S438 422 540 452 648 526 720 488'/%3E%3Cpath d='M-60 534C80 492 172 576 272 562S446 488 548 518 654 592 724 554'/%3E%3C/svg%3E");display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);min-height:100vh}
+.auth-visual{position:relative;overflow:hidden;background:#244d3b;color:#f1eee6}
+.auth-visual::before{content:"";position:absolute;inset:0;background-image:var(--auth-contour);background-size:640px 640px;opacity:.85;pointer-events:none}
+.auth-visual::after{content:"";position:absolute;left:-14%;bottom:-32%;width:78%;height:72%;background:radial-gradient(closest-side,rgba(169,201,162,.2),transparent 72%);pointer-events:none}
+.auth-art{position:absolute;right:-8%;bottom:52px;width:min(58%,640px);height:auto;opacity:.96;pointer-events:none;user-select:none}
+    .auth-visual-inner{position:relative;z-index:1;height:100%;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;padding:40px 44px 32px}
+.auth-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.auth-brand{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;letter-spacing:.01em}
+.auth-brand .brand-mark{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.94)}
+.auth-copy{max-width:470px;margin-top:clamp(72px,12vh,120px)}
+.auth-copy .eyebrow{font-size:12px;letter-spacing:.16em;color:#a9c9a2}
+.auth-copy h1{font-size:clamp(36px,3.4vw,50px);line-height:1.1;font-weight:500;letter-spacing:-.03em;margin-top:16px;color:#fff}
+.auth-copy .lede{font-size:13.5px;line-height:1.78;color:rgba(241,238,230,.66);margin-top:16px;max-width:392px}
+.auth-points{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:11px}
+.auth-points li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.6;color:rgba(241,238,230,.76)}
+.auth-points svg{width:15px;height:15px;flex:0 0 auto;margin-top:2px;color:#a9c9a2}
+.auth-points b{color:#fff;font-weight:500}
+.auth-stats{display:flex;gap:34px;margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.11)}
+.auth-stats div{display:grid;gap:3px}
+.auth-stats b{font-size:21px;font-weight:500;color:#fff;letter-spacing:-.01em}
+.auth-stats span{font-size:11px;color:rgba(241,238,230,.52)}
+.auth-stages{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.11)}
+.auth-stages span{font-size:11.5px;color:rgba(241,238,230,.5)}
+.auth-stages i{display:block;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2)}
+.auth-stages i.on{background:#a9c9a2}
+.auth-panel{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 40px;background:var(--bg)}
+.auth-panel::before{content:"";position:absolute;inset:0;background-image:var(--auth-contour-soft),radial-gradient(80% 56% at 84% 0%,rgba(47,107,72,.08),transparent 62%),linear-gradient(180deg,#f7f4ee 0%,#f3efe6 100%);background-size:560px 560px,auto,auto;pointer-events:none}
+.auth-card{position:relative;z-index:1;width:100%;max-width:412px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:36px 36px 28px;box-shadow:0 1px 2px rgba(31,27,22,.04),0 22px 60px -28px rgba(31,27,22,.3)}
+.auth-head h2{font-size:24px;font-weight:500;letter-spacing:-.01em}
+.auth-head p{font-size:13px;color:var(--ink3);margin-top:6px}
+.auth-card .form-stack{margin-top:22px}
+.auth-submit{margin-top:18px;height:44px;border-radius:10px;font-size:13.5px}
+.auth-switch{display:flex;justify-content:center;align-items:baseline;gap:6px;font-size:12.5px;color:var(--ink3);margin-top:15px}
+.auth-switch button{border:0;background:none;padding:0;font:inherit;font-weight:500;color:var(--accent);cursor:pointer}
+.auth-switch button:hover{text-decoration:underline}
+.auth-demo{margin-top:22px;padding:12px 14px;border-radius:12px;background:#f8f5ee;border:1px solid #ece4d4;font-size:12px;line-height:1.75;color:var(--ink2)}
+.auth-demo b{color:var(--ink);font-weight:500;margin-right:4px}
+.auth-demo code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;background:#fff;border:1px solid #e7ddcb;border-radius:5px;padding:1px 5px;color:var(--ink)}
+.auth-demo span{display:block;color:var(--ink3);margin-top:3px;font-size:11.5px}
+.auth-hint{margin-top:12px;text-align:center;font-size:11.5px;color:var(--ink3)}
+.auth-meta{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:18px;font-size:11.5px;color:var(--ink3)}
+.auth-meta i{width:3px;height:3px;border-radius:50%;background:#cdc4b4}
+.auth-m-hero{display:none}
+.auth-m-brand{display:none;align-items:center;gap:10px;font-size:14px;font-weight:500;color:#fff}
+.auth-m-tag{font-size:12px;line-height:1.7;color:rgba(241,238,230,.72);margin-top:12px;max-width:270px;letter-spacing:.01em}
+.auth-m-brand .brand-mark{width:34px;height:34px}
+.auth-foot{position:relative;z-index:1;font-size:11.5px;color:var(--ink3);text-align:center;margin-top:20px}
+
+/* 手机端布局：窄屏使用，宽屏隐藏 */
+.mobile-only{display:none}
+.m-tabbar{display:none}
+.m-page{max-width:720px;margin:0 auto}
+.m-page-title{margin:2px 2px 16px}
+.m-page-title h1{font-size:20px;line-height:1.25;font-weight:500}
+.m-page-title p{font-size:12px;color:var(--ink3);margin-top:3px}
+.m-hero{position:relative;overflow:hidden;background-color:#244d3b;background-image:radial-gradient(120% 120% at 10% 0%,rgba(43,90,68,.96),rgba(30,66,51,.98)),var(--contour-light);background-size:auto,420px 420px;background-position:center,right -70px top -50px;color:#f1eee6;border-radius:18px;padding:22px 20px;overflow:hidden}
+.m-hero small{font-size:10px;letter-spacing:.12em;color:#a9c9a2}
+    .m-hero-art{position:absolute;right:-12px;bottom:4px;width:152px;height:auto;opacity:.9;pointer-events:none}
+.m-hero h2{font-size:24px;line-height:1.32;font-weight:400;margin-top:8px;color:#fff}
+.m-hero h2 em{font-style:normal;color:#cfe3c8}
+.m-hero p{font-size:12px;line-height:1.7;color:rgba(241,238,230,.68);margin-top:10px;max-width:290px}
+.m-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.m-tags span{font-size:11px;padding:4px 8px;border:1px solid rgba(255,255,255,.16);border-radius:6px;color:rgba(241,238,230,.78)}
+.m-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.m-quick button{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--ink2)}
+.m-quick button:active{transform:scale(.97)}
+.m-quick .ico{color:var(--accent)}
+.m-stats{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.m-stat{padding:15px 15px 14px;border-top:1px solid var(--line2);border-right:1px solid var(--line2)}
+.m-stat:nth-child(1),.m-stat:nth-child(2){border-top:0}
+.m-stat:nth-child(even){border-right:0}
+.m-stat .label{font-size:11px;color:var(--ink3)}
+.m-stat .value{font-size:22px;font-weight:500;margin-top:6px;font-variant-numeric:tabular-nums;line-height:1.15}
+.m-stat .value small{font-size:11px;color:var(--ink3);font-weight:400;margin-left:3px}
+.m-stat .meta{font-size:11px;color:var(--ink3);margin-top:4px}
+.m-section{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:22px 2px 8px}
+.m-section h3{font-size:14px;font-weight:500}
+.m-section p{font-size:11px;color:var(--ink3);margin-top:2px}
+.m-section .link{font-size:11px;padding:0}
+.m-list{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.m-row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line2)}
+.m-row:last-child{border-bottom:0}
+.m-row .grow{flex:1;min-width:0}
+.m-row b{display:block;font-size:12.5px;font-weight:500;line-height:1.45;overflow-wrap:anywhere}
+.m-row small{display:block;font-size:11px;color:var(--ink3);margin-top:3px;line-height:1.55}
+.m-row .side{flex:0 0 auto;text-align:right;font-size:11px;color:var(--ink3);white-space:nowrap}
+.m-row .m-icon{width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent-deep);display:grid;place-items:center;flex:0 0 auto}
+.m-row .m-icon .ico{width:16px;height:16px}
+.m-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.m-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.m-card-top b{font-size:13.5px;font-weight:500}
+.m-card-meta{font-size:11.5px;color:var(--ink3);line-height:1.6;margin-top:4px}
+.m-figures{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.m-figures div{background:#faf7f1;border-radius:8px;padding:8px}
+.m-figures span{display:block;font-size:10.5px;color:var(--ink3)}
+.m-figures b{display:block;font-size:12px;font-weight:500;margin-top:2px;font-variant-numeric:tabular-nums}
+.m-card-actions{display:flex;justify-content:flex-end;gap:4px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line2)}
+.m-chart-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.m-search{display:flex;gap:8px;margin-bottom:14px}
+.m-search .search{flex:1;min-width:0}
+.m-account-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line2)}
+.m-account-row:last-child{border-bottom:0}
+.m-account-row .grow{flex:1;min-width:0}
+.m-account-row b{display:block;font-size:12.5px;font-weight:500}
+.m-account-row small{display:block;font-size:11px;color:var(--ink3);margin-top:2px}
+.m-account-row .select{height:30px;max-width:132px}
+.m-account-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.m-tabbar{position:fixed;left:0;right:0;bottom:0;z-index:80;grid-template-columns:repeat(5,1fr);background:rgba(250,248,243,.97);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(14px)}
+.m-tabbar button{border:0;background:transparent;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 2px;border-radius:8px;font-size:10.5px}
+.m-tabbar button .ico{width:19px;height:19px}
+.m-tabbar button.active{color:var(--accent-deep)}
+.m-tabbar button.active .ico{color:var(--accent)}
+.m-top-brand{align-items:center;gap:8px;font-size:14px;font-weight:500}
+.m-top-brand .brand-mark{width:30px;height:30px;border-radius:8px}
+
+@media(max-width:1200px){
+  .sidebar{width:220px;flex-basis:220px}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:1040px){
+  .grid-main,.trace-layout,.grid-half{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .permissions .permission-grid{grid-template-columns:1fr}
+}
+@media(max-width:860px){
+    .page-head>div:first-child::before{display:none}
+  .shell{display:block;height:100vh;overflow:hidden}
+  .sidebar{display:none}
+  .workspace{height:100vh}
+  .topbar{height:56px;flex:0 0 56px;padding:0 16px;background:rgba(250,248,243,.97)}
+  .mobile-only{display:flex}
+  .desktop-only{display:none}
+  .m-tabbar{display:grid}
+  #app{padding:16px 16px 96px;overflow-y:auto}
+  .btn-label{display:none}
+  .page-head{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:16px}
+  .page-head h1{font-size:22px}
+  .stats{grid-template-columns:1fr 1fr;gap:10px}
+  .stat{padding:16px}
+  .form-grid{grid-template-columns:1fr}
+  .form-grid .full{grid-column:auto}
+  .product-grid{grid-template-columns:1fr}
+  .permissions .permission-grid{grid-template-columns:1fr}
+  .grid-main,.grid-half,.trace-layout{grid-template-columns:1fr}
+  .auth{grid-template-columns:1fr}
+  .auth-visual{display:none}
+  .auth-panel{padding:0 16px 30px;min-height:100vh;justify-content:flex-start;background:var(--bg)}
+  .auth-m-hero{display:block;margin:0 -16px;padding:calc(24px + env(safe-area-inset-top)) 22px 78px;background:radial-gradient(120% 120% at 12% 0%,#2c4434 0%,#1e2b23 58%,#17231c 100%);background-image:radial-gradient(120% 120% at 12% 0%,rgba(44,68,52,.96),rgba(23,35,28,.98)),var(--auth-contour);background-size:auto,420px 420px;color:#f1eee6;border-radius:0 0 26px 26px;position:relative;overflow:hidden}
+  .auth-m-brand{display:flex}
+  .auth-m-brand .brand-mark{background:rgba(255,255,255,.94);border-color:rgba(255,255,255,.2)}
+  .auth-card{padding:24px 20px 20px;border-radius:18px;margin:-52px 0 0;box-shadow:0 1px 2px rgba(31,27,22,.05),0 24px 50px -30px rgba(31,27,22,.4)}
+  .auth-foot{margin-top:22px}
+  .sheet-mask{padding:0;align-items:flex-end}
+  .sheet{width:100%;max-height:92vh;border-radius:18px 18px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
+  .sheet-actions .btn{flex:1}
+  .toast{bottom:88px;max-width:calc(100vw - 32px);white-space:normal;text-align:center}
+}
+@media(max-width:520px){
+  .stats{grid-template-columns:1fr}
+  .page-head h1{font-size:22px}
+  .product-figures{grid-template-columns:1fr 1fr}
+}
+</style>
+<style>
+/* 视觉打磨（与客户端同一套节奏）：标题层级、表格数字、焦点环、选区 */
+.page-head h1{font-size:24px;letter-spacing:-.02em}
+.page-head p{font-size:12.5px;margin-top:5px}
+.table td{font-variant-numeric:tabular-nums}
+.auth-copy h1{margin-top:0}
+button:focus-visible,[role="button"]:focus-visible,.nav button:focus-visible,.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+::selection{background:rgba(47,107,72,.16)}
+.m-hero h2{margin-top:0}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark"><img src="/assets/logo-mark.png" alt="田序"></span>
+      <span class="brand-text"><b>田序</b><small>生产管理台</small></span>
+    </div>
+    <nav class="nav" id="nav">
+      <div class="nav-label">生产管理</div>
+      <button data-page="home"><i data-icon="home"></i>工作台<span class="nav-meta" id="navAlertCount" data-empty="1"></span></button>
+      <button data-page="production"><i data-icon="layers"></i>生产批次</button>
+      <button data-page="monitor"><i data-icon="activity"></i>环境监测</button>
+      <button data-page="trace"><i data-icon="scan"></i>质量溯源</button>
+      <button data-page="market"><i data-icon="bag"></i>产销对接</button>
+      <button data-page="expert"><i data-icon="message"></i>专家问答</button>
+      <div class="nav-label">平台管理</div>
+      <button data-page="accounts"><i data-icon="users"></i>账号与职位</button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="user-card" id="accountButton">
+        <span class="avatar" id="sideAvatar">菇</span>
+        <span><b id="sideUserName">未登录</b><small id="sideUserRole">请先登录</small></span>
+      </button>
+    </div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar">
+      <div class="crumb desktop-only"><span>田序</span><i>/</i><b id="navTitle">工作台</b></div>
+      <div class="m-top-brand mobile-only"><span class="brand-mark"><img src="/assets/logo-mark.png" alt=""></span>田序</div>
+      <div class="topbar-actions">
+        <button class="btn ghost mobile-only" id="mobileAccountButton" aria-label="当前账号" style="padding:0 8px"><span class="avatar" id="mobileAvatar" style="width:26px;height:26px;font-size:11px">菇</span></button>
+        <button class="btn primary" id="addButton"><i data-icon="plus"></i><span class="btn-label">新增记录</span></button>
+      </div>
+    </header>
+    <main id="app"><div class="loading">正在连接后台并读取数据</div></main>
+    <nav class="m-tabbar">
+      <button data-page="home"><i data-icon="home"></i>工作台</button>
+      <button data-page="production"><i data-icon="layers"></i>生产</button>
+      <button data-page="monitor"><i data-icon="activity"></i>监测</button>
+      <button data-page="trace"><i data-icon="scan"></i>溯源</button>
+      <button data-page="market"><i data-icon="bag"></i>市场</button>
+    </nav>
+  </div>
+</div>
+<div class="sheet-mask" id="sheetMask">
+  <div class="sheet">
+    <h3 id="sheetTitle">新增数据</h3>
+    <p id="sheetDesc">保存后会写入后台数据库，并立即刷新页面。</p>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast">已完成</div>
+<script src="/vendor/qrcode.js"></script>
+<script src="/vendor/qrcode_UTF8.js"></script>
+<script>
+const state={page:'home',loading:true,error:'',mobile:window.matchMedia('(max-width:860px)').matches,token:localStorage.getItem('gushi_token')||'',user:JSON.parse(localStorage.getItem('gushi_user')||'null'),users:[],roles:{roles:[],modules:[],matrix:{}},traceCode:'',traceResult:null,data:{dashboard:null,bases:[],batches:[],readings:[],alerts:[],questions:[],products:[],demands:[],tasks:[]}};
+const $=(selector,root=document)=>root.querySelector(selector);
+const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const num=value=>Number(value||0);
+const money=value=>num(value).toFixed(2).replace(/\.00$/,'');
+const dateOnly=value=>value?String(value).slice(0,10):'';
+const nowLocal=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)};
+const today=()=>new Date().toISOString().slice(0,10);
+const todayLabel=()=>new Date().toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+
+/* 线性图标：统一 18px、1.5 描边、跟随文字颜色 */
+const ICONS={
+ home:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',
+ layers:'<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/>',
+ activity:'<path d="M3 12h4l3-8 4 16 3-8h4"/>',
+ scan:'<path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3"/><path d="M4 12h16"/>',
+ bag:'<path d="M6 8h12l1 13H5L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+ message:'<path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 0 1-1-5 8 8 0 0 1 8-8 8 8 0 0 1 8 8Z"/>',
+ users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+ logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/>',
+ alert:'<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+ check:'<path d="m20 6-11 11-5-5"/>',
+ trash:'<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/>',
+ edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+ shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>',
+ refresh:'<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/>'
+};
+/* 产品图标：与小程序端同一套品类图形（扁平面性 32x32），数据库里存品类 key */
+const CROP_SVG={
+  mushroom:'<ellipse cx="16" cy="29.6" rx="7.4" ry="1.3" fill="#d9cdb8" opacity=".5"/><path d="M16 19.8c-1.9 0-3 1-3.2 2.6l-.5 4.6c-.1 1.1.6 1.9 1.7 1.9h4c1.1 0 1.8-.8 1.7-1.9l-.5-4.6c-.2-1.6-1.3-2.6-3.2-2.6Z" fill="#f0e2c6"/><path d="M6.6 17.2H25.4" stroke="#6f4526" stroke-width="1.1" stroke-linecap="round"/><path d="M3.9 16.2c0-6.5 5.4-10.9 12.1-10.9s12.1 4.4 12.1 10.9c0 1.7-1.2 2.8-3 2.8H6.9c-1.8 0-3-1.1-3-2.8Z" fill="#8a5a35"/><path d="M7.6 17.4c1.8-.5 2.8-1.6 3.4-3 .7-1.5 2-2.3 3.4-2.3 1.5 0 2.6.8 3.3 2.2.7 1.4 1.7 2.5 3.3 3.1" stroke="#a97245" stroke-width="1.7" fill="none" stroke-linecap="round"/>',
+  vegetable:'<ellipse cx="16" cy="29.6" rx="8.2" ry="1.2" fill="#d9cdb8" opacity=".5"/><path d="M16 8.2c-4.8 0-8.4 3.4-8.4 8 0 6.8 3.6 12.2 8.4 13.2 4.8-1 8.4-6.4 8.4-13.2 0-4.6-3.6-8-8.4-8Z" fill="#eef2df"/><path d="M16 8.2c-2.6 0-4.9 1-6.6 2.8 1.8 1.1 4.1 1.7 6.6 1.7s4.8-.6 6.6-1.7C20.9 9.2 18.6 8.2 16 8.2Z" fill="#5f9463"/><path d="M11 9.6c-2.2 1.6-3.4 4-3.4 6.8 0 4.2 1.4 8 3.6 10.4" stroke="#6ea36c" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M21 9.6c2.2 1.6 3.4 4 3.4 6.8 0 4.2-1.4 8-3.6 10.4" stroke="#6ea36c" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M16 12.6v16.4" stroke="#cfd9bd" stroke-width="1" stroke-linecap="round"/><path d="M12.2 14.4c-.8 3.4-.5 7.6.8 10.8M19.8 14.4c.8 3.4.5 7.6-.8 10.8" stroke="#dde4ce" stroke-width="1" fill="none" stroke-linecap="round"/>',
+  fruit:'<ellipse cx="16" cy="29.4" rx="7.8" ry="1.2" fill="#d9cdb8" opacity=".5"/><path d="M16 11.6v-2.4" stroke="#7a5a33" stroke-width="1.4" stroke-linecap="round"/><path d="M16.6 9.8c2.8-1.8 5.2-1 6.2.2-1.6 2-4 2.6-6.2 2" fill="#5f9463"/><circle cx="16" cy="19.4" r="8" fill="#e08a3c"/><path d="M11.4 16.6c1.2-2.2 3.2-3.4 5.6-3.4" stroke="#eda45f" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M19.6 23.6c-1.2 1.4-2.8 2-4.4 1.8" stroke="#c9782f" stroke-width="1.4" fill="none" stroke-linecap="round"/>',
+  grain:'<ellipse cx="16" cy="29.6" rx="7" ry="1.2" fill="#d9cdb8" opacity=".5"/><path d="M16 28.4V8.6" stroke="#a98a4e" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="12.6" cy="12.4" rx="2" ry="3.4" transform="rotate(-28 12.6 12.4)" fill="#d8b169"/><ellipse cx="19.4" cy="12.4" rx="2" ry="3.4" transform="rotate(28 19.4 12.4)" fill="#d8b169"/><ellipse cx="12.6" cy="17.4" rx="2" ry="3.4" transform="rotate(-28 12.6 17.4)" fill="#e0bd7c"/><ellipse cx="19.4" cy="17.4" rx="2" ry="3.4" transform="rotate(28 19.4 17.4)" fill="#e0bd7c"/><ellipse cx="12.6" cy="22.4" rx="2" ry="3.4" transform="rotate(-28 12.6 22.4)" fill="#e0bd7c"/><ellipse cx="19.4" cy="22.4" rx="2" ry="3.4" transform="rotate(28 19.4 22.4)" fill="#e0bd7c"/><ellipse cx="16" cy="9.4" rx="2.2" ry="3.6" fill="#d8b169"/><path d="M16 8.2c1.6 1.4 2.4 3.4 2.4 5.4" stroke="#c19b57" stroke-width=".8" fill="none" stroke-linecap="round"/>',
+  herb:'<ellipse cx="16" cy="29.6" rx="7.4" ry="1.2" fill="#d9cdb8" opacity=".5"/><path d="M16 20.4c-1.6 2.4-2.3 4.8-2 7.4M16 20.4c1.4 2.4 1.9 4.8 1.5 7.2M16 20.4v7.6" stroke="#d3b489" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M16 9.4c3 0 5 2.2 5 5 0 3-2 5.4-5 5.4s-5-2.4-5-5.4c0-2.8 2-5 5-5Z" fill="#e6cda3"/><path d="M13.6 13.2c1 1 2.2 1.4 3.6 1.2" stroke="#cfb184" stroke-width=".8" fill="none" stroke-linecap="round"/><path d="M16 9.4c0-2.4 1.4-4 3.4-4.6-.2 2.4-1.4 4-3.4 4.6Z" fill="#5f9463"/><path d="M16 9.4c0-2.4-1.4-4-3.4-4.6.2 2.4 1.4 4 3.4 4.6Z" fill="#78ab77"/>',
+  tea:'<ellipse cx="16" cy="29.4" rx="8" ry="1.2" fill="#d9cdb8" opacity=".5"/><path d="M16 27.6V15.4" stroke="#5f7f52" stroke-width="1.6" stroke-linecap="round"/><path d="M15.4 15.4c-5.4-1.4-8.6-5.4-8.2-11 5.6.2 9 4 9.4 9.6" fill="#5f9463"/><path d="M16.6 15.4c5.4-1.4 8.6-5.4 8.2-11-5.6.2-9 4-9.4 9.6" fill="#7cb07a"/><path d="M8.4 5.6c2.4 2.6 4.4 5.6 6 9M23.6 5.6c-2.4 2.6-4.4 5.6-6 9" stroke="#4d7b52" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M16 15.4c0-4.4.8-7.8 2.2-10.4" stroke="#4d7b52" stroke-width=".9" fill="none" stroke-linecap="round"/>',
+  flower:'<ellipse cx="16" cy="29.4" rx="6.6" ry="1.2" fill="#d9cdb8" opacity=".5"/><path d="M16 20.6v8.4" stroke="#5f9463" stroke-width="1.8" stroke-linecap="round"/><path d="M16 25.4c-2.4-.4-3.8-1.8-4.2-4 2.4.2 3.8 1.6 4.2 4Z" fill="#78ab77"/><ellipse cx="16" cy="8.8" rx="2.8" ry="3.2" fill="#e59a9a"/><ellipse cx="10.4" cy="12.8" rx="3.2" ry="2.8" transform="rotate(-32 10.4 12.8)" fill="#e9a9a4"/><ellipse cx="21.6" cy="12.8" rx="3.2" ry="2.8" transform="rotate(32 21.6 12.8)" fill="#e9a9a4"/><ellipse cx="12" cy="18.4" rx="3" ry="2.6" transform="rotate(-58 12 18.4)" fill="#df8f92"/><ellipse cx="20" cy="18.4" rx="3" ry="2.6" transform="rotate(58 20 18.4)" fill="#df8f92"/><circle cx="16" cy="14.4" r="3" fill="#e8b64c"/><circle cx="16" cy="14.4" r="1.2" fill="#f6dca6"/>',
+  other:'<ellipse cx="16" cy="29.6" rx="9" ry="1.2" fill="#d9cdb8" opacity=".5"/><circle cx="11.4" cy="17.4" r="3.4" fill="#7cb07a"/><circle cx="16" cy="16" r="3.8" fill="#e08a3c"/><circle cx="20.8" cy="17.4" r="3.4" fill="#c98d8d"/><path d="M6.4 19.6h19.2l-1.8 8.2c-.2 1-1 1.6-2 1.6H10.2c-1 0-1.8-.6-2-1.6Z" fill="#c9a06a"/><path d="M8.6 22.8h14.8M9.6 26.2h12.8" stroke="#b08a52" stroke-width="1" stroke-linecap="round"/><path d="M12.4 19.6c0-2 1.6-3.6 3.6-3.6s3.6 1.6 3.6 3.6" stroke="#b08a52" stroke-width="1.4" fill="none" stroke-linecap="round"/>'
+};
+const PRODUCT_ICON_LABELS={mushroom:'食用菌',vegetable:'蔬菜',fruit:'水果',grain:'粮油',herb:'中药材',tea:'茶叶',flower:'花卉',other:'其他'};
+const LEGACY_ICON_MAP={};
+[[0x1F344,'mushroom'],[0x1F33F,'leaf'],[0x1F331,'sprout'],[0x1F96C,'leaf'],[0x1FAD8,'jar'],[0x1F372,'jar'],[0x1F4E6,'box'],[0x1F3F7,'tag']].forEach(([code,name])=>{LEGACY_ICON_MAP[String.fromCodePoint(code)]=name});
+function iconNameOf(value){
+ const raw=String(value||'').trim();
+ if(!raw)return 'mushroom';
+ if(LEGACY_ICON_MAP[raw])return LEGACY_ICON_MAP[raw];
+ return CROP_SVG[raw]?raw:'';
+}
+function productIconSvg(name,size=24){
+ const art=CROP_SVG[name]||CROP_SVG.mushroom;
+ return `<svg viewBox="0 0 32 32" width="${size}" height="${size}" aria-hidden="true">${art}</svg>`;
+}
+const ico=(name,cls='')=>svgIcon(name,cls);
+const svgIcon=(name,cls='')=>`<svg class="ico ${cls}" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]||''}</svg>`;
+const fillIcons=root=>$$('[data-icon]',root).forEach(el=>{el.innerHTML=svgIcon(el.dataset.icon);el.style.display='block'});
+
+async function api(path,options={}){
+  const headers={'Content-Type':'application/json',...(state.token?{Authorization:'Bearer '+state.token}:{})};
+  const response=await fetch(path,{headers,...options});
+  let payload;
+  try{payload=await response.json()}catch{throw new Error('后台返回格式错误')}
+  if(response.status===401){clearAuth();renderLogin();throw new Error(payload.message||'请先登录账号')}
+  if(!response.ok||payload.code!==0)throw new Error(payload.message||`请求失败：${response.status}`);
+  return payload.data;
+}
+async function loadAll(){
+  state.loading=true;state.error='';render();
+  try{
+    const [dashboard,bases,batches,readings,alerts,questions,products,demands,tasks,roles]=await Promise.all([
+      api('/api/dashboard'),api('/api/bases'),api('/api/batches'),api('/api/readings?limit=100'),api('/api/alerts?limit=100'),api('/api/questions'),api('/api/products'),api('/api/demands'),api('/api/tasks'),api('/api/auth/roles')
+    ]);
+    state.data={dashboard,bases,batches,readings,alerts,questions,products,demands,tasks};
+    state.roles=roles||{roles:[],modules:[],matrix:{}};
+  }catch(error){state.error=error.message}
+  state.loading=false;render();
+}
+function toast(message,error=false){
+  const el=$('#toast');el.textContent=message;el.style.background=error?'#8f2f26':'#241f19';el.classList.add('show');
+  clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove('show'),2600);
+}
+function baseName(id){return state.data.bases.find(item=>item.id===Number(id))?.name||'未关联基地'}
+function batchCode(id){return state.data.batches.find(item=>item.id===Number(id))?.code||'未关联批次'}
+function accountName(){return state.user?.display_name||state.user?.username||'未登录'}
+function empty(title='暂无真实数据',text='点击右上角「新增记录」录入。系统不会自动生成真实业务数据。'){return `<div class="empty"><b>${esc(title)}</b>${esc(text)}</div>`}
+function stat(label,value,unit,meta,metaClass=''){return `<div class="stat"><div class="label">${esc(label)}</div><div class="value">${esc(value)}${unit?`<small>${esc(unit)}</small>`:''}</div><div class="meta ${metaClass}">${esc(meta||'')}</div></div>`}
+function badge(text,type=''){return `<span class="badge ${type}">${esc(text)}</span>`}
+function productState(p){const now=today(),start=dateOnly(p.available_date),end=dateOnly(p.off_shelf_date);if(end&&now>end)return{label:'已下架',type:'gray'};if(start&&now<start)return{label:'未上架',type:'warn'};return{label:'可供应',type:'pos'}}
+function stateBadge(p){const s=productState(p);return badge(s.label,s.type)}
+const STAGES=['育苗期','生长期','成熟期','采收期','已完成'];
+const BATCH_STATUS={active:'进行中',done:'已完成',archived:'已归档'};
+const CROP_LABELS={mushroom:'食用菌',vegetable:'蔬菜',fruit:'水果',grain:'粮油',herb:'中药材',tea:'茶叶',flower:'花卉',other:'其他'};
+const cropLabel=k=>CROP_LABELS[k]||'食用菌';
+function stageDots(stage){const idx=STAGES.indexOf(stage);return `<span class="stage" title="${esc(stage||'未设置')}"><span class="stage-dots">${STAGES.map((s,i)=>`<i class="${idx>=0&&i<=idx?'on':''}"></i>`).join('')}</span><span>${esc(stage||'未设置')}</span></span>`}
+const pageMeta={home:['工作台','生产、监测与产销数据总览'],production:['生产批次','批次、规模与基地档案'],monitor:['环境监测','设备数据与自动预警'],trace:['质量溯源','按真实批次查看生产全过程'],market:['产销对接','真实供应与采购需求'],expert:['专家问答','AI 自动作答与专家回复'],accounts:['账号与职位','角色分配与登录密码管理']};
+
+/* 环境温度曲线：只画后台已保存的记录，数据不足时给出空状态 */
+function envChart(){
+  const list=state.data.readings
+    .map(r=>({t:new Date(r.recorded_at),v:r.temperature,r}))
+    .filter(x=>!isNaN(x.t)&&x.v!==null&&x.v!==undefined&&x.v!=='')
+    .sort((a,b)=>a.t-b.t)
+    .slice(-24);
+  if(list.length<2)return `<div class="chart-empty"><b>暂无可绘制的环境记录</b><br>至少需要两条带温度的记录，录入后会自动形成曲线。</div>`;
+  const W=880,H=250,L=46,R=18,T=18,B=30;
+  const vals=list.map(x=>num(x.v));
+  const low=Math.min(...vals),high=Math.max(...vals);
+  const min=Math.floor(low-1),max=Math.ceil(high+1);
+  const x=i=>L+(list.length===1?0:i*(W-L-R)/(list.length-1));
+  const y=v=>T+(max-v)/(max-min||1)*(H-T-B);
+  const pts=list.map((x0,i)=>[x(i),y(x0.v)]);
+  const line=pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ');
+  const area=`${line} L ${pts[pts.length-1][0].toFixed(1)} ${H-B} L ${pts[0][0].toFixed(1)} ${H-B} Z`;
+  const grid=[0,1,2,3].map(i=>{const v=min+(max-min)*i/3;const gy=y(v);return `<line class="grid-line" x1="${L}" x2="${W-R}" y1="${gy}" y2="${gy}"/><text class="axis-text" x="${L-10}" y="${gy+4}" text-anchor="end">${v.toFixed(0)}°</text>`}).join('');
+  const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+  const avgY=y(avg);
+  const label=i=>{const d=list[Math.min(list.length-1,Math.max(0,i))].t;return `${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="最近环境温度曲线">
+    ${grid}
+    <line class="avg" x1="${L}" x2="${W-R}" y1="${avgY.toFixed(1)}" y2="${avgY.toFixed(1)}"/>
+    <path class="area" d="${area}"/>
+    <path class="series" d="${line}"/>
+    ${pts.map((p,i)=>`<circle class="point${i===pts.length-1?' last':''}" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${i===pts.length-1?4:3}"/>`).join('')}
+    <text class="axis-text" x="${L}" y="${H-8}" text-anchor="start">${label(0)}</text>
+    <text class="axis-text" x="${(W-L-R)/2+L}" y="${H-8}" text-anchor="middle">${label(Math.floor(list.length/2))}</text>
+    <text class="axis-text" x="${W-R}" y="${H-8}" text-anchor="end">${label(list.length-1)}</text>
+  </svg>
+  <div class="legend"><span><i></i>温度</span><span><i class="dash"></i>区间均值 ${avg.toFixed(1)}°C</span></div>`;
+}
+function batchRows(batches){
+  return batches.map(batch=>`<tr>
+    <td><span class="cell-title">${esc(batch.code)}</span><span class="cell-sub">${esc(dateOnly(batch.start_date)||'未填入库日期')} 入库</span></td>
+    <td>${esc(batch.mushroom_type)}${batch.variety?`<span class="cell-sub">${esc(batch.variety)}</span>`:''}</td>
+    <td>${esc(baseName(batch.base_id))}</td>
+    <td>${stageDots(batch.stage)}</td>
+    <td class="num right">${esc(batch.quantity)}<span class="cell-sub">${esc(batch.quantity?(cropLabel(batch.crop_category)==='食用菌'?'棒':'株'):'')}</span></td>
+    <td class="nowrap">${esc(dateOnly(batch.expected_harvest_date)||'--')}</td>
+    <td><div class="actions"><button class="link danger" data-del="batches:${batch.id}">删除</button></div></td>
+  </tr>`).join('');
+}
+function readingRows(readings){
+  return readings.map(r=>`<tr>
+    <td class="nowrap"><span class="cell-title">${esc(dateOnly(r.recorded_at))}</span><span class="cell-sub">${esc(String(r.recorded_at||'').slice(11,16))}</span></td>
+    <td>${esc(r.device_name||'未命名设备')}<span class="cell-sub">${esc(baseName(r.base_id))}</span></td>
+    <td class="num right">${esc(r.temperature??'--')}°</td>
+    <td class="num right">${esc(r.humidity??'--')}%</td>
+    <td class="num right">${esc(r.co2??'--')}</td>
+    <td class="num right">${esc(r.light??'--')}</td>
+    <td><div class="actions"><button class="link danger" data-del="readings:${r.id}">删除</button></div></td>
+  </tr>`).join('');
+}
+
+function renderHome(){
+  const d=state.data.dashboard||{};
+  const openAlerts=(d.alerts||state.data.alerts).filter(a=>a.status==='open').slice(0,5);
+  const latest=(d.latestReadings||[]).slice(0,1)[0];
+  const batches=state.data.batches.slice(0,5);
+  const tasks=state.data.tasks.slice(0,5);
+  return `<section class="page">
+    <div class="dash-hero">
+      <div><p class="eyebrow">${esc(todayLabel())}</p><h1>你好，${esc(accountName())}</h1><p class="sub">生产、监测、溯源与产销共用一条数据链，下面的数字全部来自后台数据库。</p></div>
+      <div class="page-head-actions"><button class="btn" data-form="reading">录入环境</button><button class="btn primary" data-form="batch">新增批次</button></div>
+    </div>
+    <div class="stats">
+      ${stat('生产基地',d.bases??0,'处','已保存基地档案')}
+      ${stat('生产批次',d.batches??0,'批','在产批次统一台账')}
+      ${stat('在线设备',d.devicesOnline??0,'台',`共 ${d.devices??0} 台 · 自动上报 ${d.deviceReadings??0} 条`,(d.devicesOnline??0)>0?'pos':'')}
+      ${stat('待处理预警',d.openAlerts??0,'条',(d.openAlerts??0)>0?'按阈值自动生成':'当前无待处理预警',(d.openAlerts??0)>0?'warn':'')}
+    </div>
+    <div class="grid-main">
+      <div class="card chart-card">
+        <div class="card-body">
+          <div class="chart-head">
+            <div><div class="card-head h2">环境温度</div><p class="sub muted" style="font-size:12px;margin-top:3px">最近 ${Math.min(state.data.readings.length,24)} 条已保存记录</p></div>
+            <div class="now"><b>${latest?esc(latest.temperature??'--')+'°C':'--'}</b><span>当前温度 · 湿度 ${latest?esc(latest.humidity??'--')+'%':'--'}</span></div>
+          </div>
+          ${envChart()}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>待处理预警</h2><div class="sub">按环境阈值自动生成</div></div><button class="link" data-page="monitor">全部</button></div>
+        <div class="list">${openAlerts.length?openAlerts.map(alert=>`<div class="list-row"><span class="dot ${alert.level==='high'?'red':'warn'}"></span><div class="grow"><b>${esc(alert.message)}</b><small>${esc(alert.base_name||baseName(alert.base_id))} · ${esc(alert.alert_type)}</small></div><button class="link" data-ack="${alert.id}">处理</button></div>`).join(''):empty('暂无待处理预警','录入环境数据后，超过阈值的记录会自动生成预警。')}</div>
+      </div>
+    </div>
+    <div class="grid-main">
+      <div class="card">
+        <div class="card-head"><div><h2>生产批次</h2><div class="sub">批次是生产、监测、溯源与销售的共同主线</div></div><button class="link" data-page="production">查看全部</button></div>
+        <div class="table-wrap"><table class="table"><thead><tr><th>批次编号</th><th>品类</th><th>基地</th><th>生长阶段</th><th class="right">规模</th><th>预计采收</th><th></th></tr></thead><tbody>${batches.length?batchRows(batches):`<tr><td colspan="7">${empty('暂无生产批次','请先新增基地，再录入真实批次编号、品类与规模。')}</td></tr>`}</tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>今日任务</h2><div class="sub">到期或已逾期的未完成任务</div></div><button class="link" data-form="task">新增</button></div>
+        <div class="list">${tasks.length?tasks.map(task=>{const overdue=!!task.due_date&&dateOnly(task.due_date)<today();return `<div class="list-row"><span class="dot ${task.priority==='high'||overdue?'red':'gray'}"></span><div class="grow"><b>${esc(task.title)}</b><small>${esc(task.description||'无补充说明')} · 截止 ${esc(dateOnly(task.due_date)||'未设置')}${overdue?' · 已逾期':''}</small></div><div class="side"><button class="link danger" data-del="tasks:${task.id}">删除</button></div></div>`}).join(''):empty('今日暂无到期任务','今天到期或已逾期的任务会显示在这里。')}</div>
+      </div>
+    </div>
+  </section>`
+}
+function renderProduction(){
+  const batches=state.data.batches,bases=state.data.bases;
+  return `<section class="page">
+    <div class="page-head"><div><h1>生产批次</h1><p>批次、规模与基地档案</p></div><div class="page-head-actions"><button class="btn" data-form="base">新增基地</button><button class="btn primary" data-form="batch">新增批次</button></div></div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-head"><div><h2>批次台账</h2><div class="sub">${batches.length} 个批次</div></div></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>批次编号</th><th>品类</th><th>基地</th><th>生长阶段</th><th class="right">规模</th><th>预计采收</th><th></th></tr></thead><tbody>${batches.length?batchRows(batches):`<tr><td colspan="7">${empty('暂无生产批次','请先新增基地，再录入真实批次编号、品类与规模。')}</td></tr>`}</tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div><h2>生产基地</h2><div class="sub">${bases.length} 处基地</div></div><button class="btn small" data-form="base">新增基地</button></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>基地名称</th><th>所属乡镇</th><th class="right">面积</th><th>联系人</th><th>联系电话</th><th></th></tr></thead><tbody>
+        ${bases.length?bases.map(b=>`<tr><td><span class="cell-title">${esc(b.name)}</span>${b.address?`<span class="cell-sub">${esc(b.address)}</span>`:''}</td><td>${esc(b.township||'--')}</td><td class="num right">${esc(b.area_mu||'--')}${b.area_mu?' 亩':''}</td><td>${esc(b.contact_name||'--')}</td><td class="num">${esc(b.contact_phone||'--')}</td><td><div class="actions"><button class="link danger" data-del="bases:${b.id}">删除</button></div></td></tr>`).join(''):`<tr><td colspan="6">${empty('暂无基地档案','录入基地名称、乡镇、面积与联系人后即可创建批次。')}</td></tr>`}
+      </tbody></table></div>
+    </div>
+  </section>`
+}
+function renderMonitor(){
+  const readings=state.data.readings.slice(0,20);
+  const alerts=state.data.alerts.filter(a=>a.status==='open');
+  const latest=state.data.readings[0];
+  return `<section class="page">
+    <div class="page-head"><div><h1>环境监测</h1><p>设备数据与自动预警</p></div><div class="page-head-actions"><button class="btn primary" data-form="reading">录入环境数据</button></div></div>
+    <div class="stats">
+      ${stat('最新温度',latest?latest.temperature??'--':'--','°C',latest?`${esc(latest.device_name||'未命名设备')}`:'暂无记录')}
+      ${stat('最新湿度',latest?latest.humidity??'--':'--','%',latest?`${esc(baseName(latest.base_id))}`:'暂无记录')}
+      ${stat('最新 CO₂',latest?latest.co2??'--':'--','ppm',latest?'超过阈值会自动预警':'暂无记录')}
+      ${stat('待处理预警',alerts.length,'条',alerts.length?'等待处理':'当前无预警',alerts.length?'warn':'')}
+    </div>
+    <div class="card chart-card" style="margin-bottom:20px"><div class="card-body">
+      <div class="chart-head"><div><div class="card-head h2">温度曲线</div><p class="sub muted" style="font-size:12px;margin-top:3px">保留最近 100 条记录中的温度数据</p></div><div class="now"><b>${latest?esc(latest.temperature??'--')+'°C':'--'}</b><span>最新读数</span></div></div>
+      ${envChart()}
+    </div></div>
+    <div class="grid-main">
+      <div class="card">
+        <div class="card-head"><div><h2>环境记录</h2><div class="sub">温度 / 湿度 / CO₂ / 光照</div></div></div>
+        <div class="table-wrap"><table class="table"><thead><tr><th>时间</th><th>设备 / 基地</th><th class="right">温度</th><th class="right">湿度</th><th class="right">CO₂</th><th class="right">光照</th><th></th></tr></thead><tbody>${readings.length?readingRows(readings):`<tr><td colspan="7">${empty('暂无环境数据','请先新增基地，再录入设备名称和环境指标。')}</td></tr>`}</tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>待处理预警</h2><div class="sub">${alerts.length} 条</div></div></div>
+        <div class="list">${alerts.length?alerts.map(a=>`<div class="list-row"><span class="dot ${a.level==='high'?'red':'warn'}"></span><div class="grow"><b>${esc(a.message)}</b><small>${esc(a.base_name||baseName(a.base_id))} · ${esc(a.alert_type)}</small></div><button class="link" data-ack="${a.id}">处理</button></div>`).join(''):empty('暂无待处理预警','环境数据超过阈值后会自动生成预警。')}</div>
+      </div>
+    </div>
+  </section>`
+}
+function renderTrace(){
+  const result=state.traceResult;
+  let body=`<div class="card">${empty('输入批次编号后查询','批次、基地、生产事件和产品信息均来自后台数据库。')}</div>`;
+  if(result){
+    const events=result.events||[],products=result.products||[],batch=result.batch;
+    body=`<div class="trace-layout">
+      <div class="card">
+        <div class="card-head"><div><h2>${esc(batch.mushroom_type)} · ${esc(batch.code)}</h2><div class="sub">${esc(batch.base_name||'未关联基地')}${batch.base_address?' · '+esc(batch.base_address):''}</div></div>${badge('数据库记录','gray')}</div>
+        <div class="timeline">${events.length?events.map(e=>`<div class="event"><span class="dot"></span><div><b>${esc(e.title)}</b><p>${esc(e.description||e.event_type)}</p></div><div style="text-align:right"><time>${esc(dateOnly(e.event_date))}</time><div><button class="link danger" data-del="trace-events:${e.id}">删除</button></div></div></div>`).join(''):empty('该批次暂无溯源事件','点击上方「新增溯源事件」补录生产记录。')}</div>
+      </div>
+      <div class="stack">
+        <div class="card qr-box">
+          <div class="qr"><img id="traceQr" alt="溯源二维码"></div>
+          <div class="hint">扫码查看「${esc(batch.code)}」的完整生产记录<br>二维码内容为公开溯源页链接</div>
+          <div style="margin-top:12px">${stageDots(batch.stage)}</div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h2>该批次产品</h2></div></div>
+          <div class="list">${products.length?products.map(p=>`<div class="list-row"><div class="grow"><b>${esc(p.name)}</b><small>${esc(p.quantity)} ${esc(p.unit)} · ¥${money(p.price)}/${esc(p.unit)}</small></div>${stateBadge(p)}</div>`).join(''):empty('暂无关联产品','在产销对接中发布供应信息并选择该批次。')}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+  return `<section class="page">
+    <div class="page-head"><div><h1>质量溯源</h1><p>按真实批次查看生产全过程</p></div><div class="page-head-actions"><button class="btn primary" data-form="trace-event">新增溯源事件</button></div></div>
+    <div class="card" style="padding:16px 20px;margin-bottom:20px">
+      <div class="toolbar"><div class="search" style="flex:1">${ico('search')}<input id="traceCode" placeholder="输入批次编号，例如 DEMO-20260901-01" value="${esc(state.traceCode||'')}"></div><button class="btn primary" data-trace-search>查询</button></div>
+    </div>
+    ${body}
+  </section>`
+}
+function renderMarket(){
+  const products=state.data.products,demands=state.data.demands;
+  return `<section class="page">
+    <div class="page-head"><div><h1>产销对接</h1><p>供应信息与采购需求</p></div><div class="page-head-actions"><button class="btn" data-form="demand">发布采购需求</button><button class="btn primary" data-form="product">发布供应</button></div></div>
+    <div class="card-head" style="padding:0 0 12px;border:0"><div><h2>供应信息</h2><div class="sub">只展示后台已保存的真实供应数据</div></div></div>
+    <div class="product-grid">${products.length?products.map(p=>`<article class="card product-card">
+      <div class="product-head">
+        <div class="product-icon">${iconHtml(p.icon,p.name)}</div>
+        <div class="grow"><h3>${esc(p.name)}</h3><p>批次 ${esc(batchCode(p.batch_id))}</p></div>
+        ${stateBadge(p)}
+      </div>
+      <div class="product-figures"><div><span>数量</span><b>${esc(p.quantity)} ${esc(p.unit)}</b></div><div><span>价格</span><b>¥${money(p.price)}</b></div><div><span>上架</span><b>${esc(dateOnly(p.available_date)||'未设置')}</b></div></div>
+      <p class="product-desc">${esc(p.description||'暂无说明')}</p>
+      <div class="product-foot">
+        <div class="qr-mini"><img data-qr-batch="${esc(batchCode(p.batch_id)==='未关联批次'?'':batchCode(p.batch_id))}" alt="产品溯源二维码"></div>
+        <span class="hint">包装贴码，买家可查该批次完整记录</span>
+        <div class="product-actions"><button class="link" data-edit="product:${p.id}">修改</button><button class="link" data-edit-icon="${p.id}">换图标</button><button class="link danger" data-del="products:${p.id}">删除</button></div>
+      </div>
+    </article>`).join(''):`<div class="card" style="grid-column:1/-1">${empty('暂无供应信息','点击发布供应，保存真实产品、数量、价格和批次。')}</div>`}</div>
+    <div class="card">
+      <div class="card-head"><div><h2>采购需求</h2><div class="sub">采购商通过表单录入并保存到数据库</div></div></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>采购方</th><th>采购产品</th><th class="right">数量</th><th class="right">意向价格</th><th>联系方式</th><th>具体要求</th><th></th></tr></thead><tbody>
+      ${demands.length?demands.map(d=>`<tr><td><span class="cell-title">${esc(d.buyer_name)}</span></td><td>${esc(d.product_name)}</td><td class="num right">${esc(d.quantity)} ${esc(d.unit)}</td><td class="num right">¥${money(d.price)}</td><td class="num">${esc(d.contact||'--')}</td><td style="max-width:280px;color:var(--ink3)">${esc(d.requirements||'暂无补充要求')}</td><td><div class="actions"><button class="link" data-edit="demand:${d.id}">修改</button><button class="link danger" data-del="demands:${d.id}">删除</button></div></td></tr>`).join(''):`<tr><td colspan="7">${empty('暂无采购需求','点击发布采购需求，保存真实采购方和产品需求。')}</td></tr>`}
+      </tbody></table></div>
+    </div>
+  </section>`
+}
+function renderExpert(){
+  const qs=state.data.questions;
+  const baseOptions=['<option value="">不关联基地</option>'].concat(state.data.bases.map(b=>`<option value="${b.id}">${esc(b.name)}</option>`)).join('');
+  const categoryOptions=['病虫害防治','环境调控','生产流程','设备使用','市场销售'].map(v=>`<option>${v}</option>`).join('');
+  return `<section class="page">
+    <div class="page-head"><div><h1>专家问答</h1><p>提问保存在数据库，AI 立即作答，专家可补充回复</p></div></div>
+    <div class="grid-main">
+      <div class="card"><div class="card-body">
+        <h2 style="font-size:14px;font-weight:500;margin-bottom:16px">提交问题</h2>
+        <div class="form-grid">
+          <div class="field full"><label>问题标题</label><input id="askTitle" placeholder="例如：叶片发黄 / 菌棒发绿霉怎么办"></div>
+          <div class="field"><label>问题类型</label><select id="askCategory">${categoryOptions}</select></div>
+          <div class="field"><label>关联基地（可选）</label><select id="askBase">${baseOptions}</select></div>
+          <div class="field full"><label>问题描述</label><textarea id="askContent" placeholder="补充温度、湿度等环境情况，AI 会结合你的数据作答"></textarea></div>
+        </div>
+        <button class="btn primary" id="askSubmit" style="margin-top:16px">提交提问</button>
+      </div></div>
+      <div class="card"><div class="card-head"><div><h2>问答记录</h2><div class="sub">${qs.length} 条</div></div></div>
+        <div class="list" style="max-height:640px;overflow:auto">${qs.length?qs.map(q=>`<div class="list-row"><div class="grow"><b>${esc(q.title)}</b><small>${esc(baseName(q.base_id))} · ${esc(q.category||'未分类')} · ${badge(q.status==='answered'?'已回复':'待回复',q.status==='answered'?'pos':'warn')}</small><p style="font-size:12px;color:var(--ink3);margin-top:6px;line-height:1.6">${esc(q.content)}</p>${q.answer?`<div class="notice pos" style="margin:8px 0 0;font-size:12px">专家回复：${esc(q.answer)}</div>`:''}</div><button class="link danger" data-del="questions:${q.id}">删除</button></div>`).join(''):empty('暂无问答记录','在上方输入问题提交即可，AI 会立即回答并存档。')}</div>
+      </div>
+    </div>
+  </section>`
+}
+/**
+ * 角色权限表：直接由后端 RBAC 矩阵渲染（GET /api/auth/roles 返回 modules + matrix），
+ * 页面上的每一个「读写 / 只读 / —」都对应后端真正会校验的规则，而不是另行手写的文案。
+ */
+function permissionTable(){
+  const meta=state.roles||{};
+  const roles=(meta.roles||[]).filter(item=>item.value!=='admin');
+  const modules=meta.modules||[];
+  const matrix=meta.matrix||{};
+  if(!roles.length||!modules.length)return '<div class="card"><div class="empty">正在读取权限矩阵</div></div>';
+  const mark=level=>level==='rw'?'<span class="perm rw">读写</span>':level==='r'?'<span class="perm r">只读</span>':level==='w'?'<span class="perm w">仅上传</span>':'<span class="perm none">—</span>';
+  return `<div class="card">
+      <div class="card-head"><div><h2>角色权限</h2><div class="sub">下表由后端 RBAC 矩阵实时生成，越权请求返回 403</div></div></div>
+      <div class="perm-wrap"><table class="perm-table">
+        <thead><tr><th>模块</th>${roles.map(role=>`<th>${esc(role.label)}</th>`).join('')}</tr></thead>
+        <tbody>${modules.map(module=>`<tr><th><b>${esc(module.label)}</b><span>${esc(module.group)}</span></th>${roles.map(role=>`<td>${mark((matrix[role.value]||{})[module.key])}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>
+      <div class="perm-note">平台管理员拥有全部模块读写权限，未在表中重复列出。</div>
+    </div>`;
+}
+function renderAccounts(){
+  if(!state.user||state.user.role!=='admin'){
+    return `<section class="page">
+      <div class="page-head"><div><h1>账号与职位</h1><p>仅有平台管理员可以进入</p></div></div>
+      <div class="card"><div class="card-body">
+        <div class="notice">职位分配与密码重置仅对平台管理员开放。输入管理员账号验证后进入，当前登录会被替换为该管理员。</div>
+        <button class="btn primary" id="verifyAdmin">验证管理员身份</button>
+      </div></div>
+    </section>`
+  }
+  return `<section class="page">
+    <div class="page-head"><div><h1>账号与职位</h1><p>调整账号职位、重置登录密码</p></div><div class="page-head-actions"><button class="btn" id="refreshUsers">${ico('refresh')}刷新</button></div></div>
+    <div class="notice">职位修改后，对方重新登录生效。密码以加密形式保存，任何人都无法查看原密码，只能重置。</div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-head"><div class="search">${ico('search')}<input id="userSearch" placeholder="搜索账号或称呼"></div><span class="muted num" id="userCount"></span></div>
+      <div id="userList"><div class="loading">正在读取账号列表</div></div>
+    </div>
+    ${permissionTable()}
+  </section>`
+}
+
+/* ---------- 手机端页面：窄屏沿用原来的手机布局 ---------- */
+function mSection(title,sub,action=''){return `<div class="m-section"><div><h3>${esc(title)}</h3><p>${esc(sub)}</p></div>${action}</div>`}
+function renderMobileHome(){
+  const d=state.data.dashboard||{};
+  const readings=(d.latestReadings||[]).slice(0,4);
+  const alerts=(d.alerts||state.data.alerts).filter(a=>a.status==='open').slice(0,4);
+  const tasks=state.data.tasks.slice(0,4);
+  return `<section class="page m-page">
+    <div class="m-hero"><small>田序 · 生产管理台</small><h2>从一株新苗，<br><em>到一份好收成。</em></h2><p>批次、环境、溯源与产销共用一条数据链；数字来自后台数据库，没有录入时显示空状态。</p><div class="m-tags"><span>基地</span><span>批次</span><span>监测</span><span>溯源</span></div><img class="m-hero-art" src="/assets/hero-farm.png" alt="" aria-hidden="true"></div>
+    <div class="m-quick">
+      <button data-form="base">${ico('plus')}新增基地</button>
+      <button data-form="batch">${ico('layers')}新增批次</button>
+      <button data-form="reading">${ico('activity')}录入环境</button>
+      <button data-page="expert">${ico('message')}专家问答</button>
+    </div>
+    ${mSection('今日数据','来自后台数据库的实时汇总')}
+    <div class="m-stats">
+      <div class="m-stat"><div class="label">生产基地</div><div class="value">${d.bases??0}<small>处</small></div><div class="meta">已保存基地</div></div>
+      <div class="m-stat"><div class="label">生产批次</div><div class="value">${d.batches??0}<small>批</small></div><div class="meta">已保存批次</div></div>
+      <div class="m-stat"><div class="label">在线设备</div><div class="value">${d.devicesOnline??0}<small>台</small></div><div class="meta">共 ${d.devices??0} 台 · 自动上报 ${d.deviceReadings??0} 条</div></div>
+      <div class="m-stat"><div class="label">待处理预警</div><div class="value">${d.openAlerts??0}<small>条</small></div><div class="meta">自动规则生成</div></div>
+    </div>
+    ${mSection('最新环境记录','设备自动上报，异常自动预警',`<button class="link" data-form="reading">手动补录</button>`)}
+    <div class="m-list">${readings.length?readings.map(r=>`<div class="m-row"><span class="m-icon">${ico('activity')}</span><div class="grow"><b>${esc(r.base_name||baseName(r.base_id))}</b><small>${esc(r.device_name||'未命名设备')} · ${esc(r.temperature??'--')}°C · 湿度 ${esc(r.humidity??'--')}% · CO₂ ${esc(r.co2??'--')}ppm</small></div><span class="side">${esc(dateOnly(r.recorded_at))}</span></div>`).join(''):empty('暂无环境记录','请先新增基地，再录入环境数据。')}</div>
+    ${mSection('待处理预警','环境数据保存后自动生成',`<button class="link" data-page="monitor">全部</button>`)}
+    <div class="m-list">${alerts.length?alerts.map(a=>`<div class="m-row"><span class="dot ${a.level==='high'?'red':'warn'}" style="margin-top:6px"></span><div class="grow"><b>${esc(a.message)}</b><small>${esc(a.base_name||baseName(a.base_id))} · ${esc(a.alert_type)}</small></div><button class="link" data-ack="${a.id}">处理</button></div>`).join(''):empty('暂无待处理预警','录入环境数据后，超过阈值的记录会自动生成预警。')}</div>
+    ${mSection('今日任务','到期或已逾期的未完成任务',`<button class="link" data-form="task">新增</button>`)}
+    <div class="m-list">${tasks.length?tasks.map(t=>`<div class="m-row"><span class="dot ${t.priority==='high'?'red':'gray'}" style="margin-top:6px"></span><div class="grow"><b>${esc(t.title)}</b><small>${esc(t.description||'无补充说明')} · 截止 ${esc(dateOnly(t.due_date)||'未设置')}</small></div><button class="link danger" data-del="tasks:${t.id}">删除</button></div>`).join(''):empty('今日暂无到期任务','今天到期或已逾期的任务会显示在这里。')}</div>
+    ${mSection('当前账号','数据按账号隔离，保存在后台数据库')}
+    <div class="m-card" style="text-align:center">
+      <div style="font-size:14px;font-weight:500">${esc(accountName())}</div>
+      <div class="m-card-meta">账号：${esc(state.user?.username||'--')} · 角色：${esc(state.user?.role_label||state.user?.role||'--')}</div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+        <button class="btn small" data-page="accounts">账号与职位</button>
+        <button class="btn small" data-logout>退出登录</button>
+      </div>
+    </div>
+  </section>`
+}
+function renderMobileProduction(){
+  const batches=state.data.batches,bases=state.data.bases;
+  return `<section class="page m-page">
+    <div class="m-page-title"><h1>生产批次</h1><p>批次、规模与基地档案</p></div>
+    <div class="toolbar" style="margin-bottom:14px"><button class="btn small" data-form="base">新增基地</button><button class="btn primary small" data-form="batch">新增批次</button></div>
+    ${mSection('批次台账',`${batches.length} 个批次`)}
+    ${batches.length?batches.map(b=>`<div class="m-card"><div class="m-card-top"><div><b>${esc(b.code)}</b><div class="m-card-meta">${esc(baseName(b.base_id))} · ${esc(cropLabel(b.crop_category))} · ${esc(b.mushroom_type)}${b.variety?' · '+esc(b.variety):''} · 规模 ${esc(b.quantity)}</div></div>${badge(b.stage,b.stage?'pos':'')}</div><div style="margin-top:10px">${stageDots(b.stage)}</div><div class="m-figures"><div><span>入库日期</span><b>${esc(dateOnly(b.start_date)||'--')}</b></div><div><span>预计采收</span><b>${esc(dateOnly(b.expected_harvest_date)||'--')}</b></div><div><span>状态</span><b>${esc(BATCH_STATUS[b.status]||b.status)}</b></div></div><div class="m-card-actions"><button class="link danger" data-del="batches:${b.id}">删除</button></div></div>`).join(''):empty('暂无生产批次','请先新增基地，再录入真实批次编号、品类与规模。')}
+    ${mSection('生产基地',`${bases.length} 处基地`)}
+    ${bases.length?bases.map(b=>`<div class="m-card"><div class="m-card-top"><div><b>${esc(b.name)}</b><div class="m-card-meta">${esc(b.township||'未填乡镇')} · ${esc(b.area_mu||'--')} 亩${b.address?' · '+esc(b.address):''}</div></div></div><div class="m-card-actions"><button class="link danger" data-del="bases:${b.id}">删除</button></div></div>`).join(''):empty('暂无基地档案','录入基地名称、乡镇、面积与联系人后即可创建批次。')}
+  </section>`
+}
+function renderMobileMonitor(){
+  const readings=state.data.readings.slice(0,10);
+  const alerts=state.data.alerts.filter(a=>a.status==='open');
+  const latest=state.data.readings[0];
+  return `<section class="page m-page">
+    <div class="m-page-title"><h1>环境监测</h1><p>设备数据与自动预警</p></div>
+    <div class="m-stats" style="margin-bottom:14px">
+      <div class="m-stat"><div class="label">最新温度</div><div class="value">${latest?esc(latest.temperature??'--'):'--'}<small>°C</small></div><div class="meta">${latest?esc(latest.device_name||'未命名设备'):'暂无记录'}</div></div>
+      <div class="m-stat"><div class="label">最新湿度</div><div class="value">${latest?esc(latest.humidity??'--'):'--'}<small>%</small></div><div class="meta">${latest?esc(baseName(latest.base_id)):'暂无记录'}</div></div>
+      <div class="m-stat"><div class="label">最新 CO₂</div><div class="value">${latest?esc(latest.co2??'--'):'--'}<small>ppm</small></div><div class="meta">超过阈值自动预警</div></div>
+      <div class="m-stat"><div class="label">待处理预警</div><div class="value">${alerts.length}<small>条</small></div><div class="meta">${alerts.length?'等待处理':'当前无预警'}</div></div>
+    </div>
+    <div class="m-chart-card" style="margin-bottom:14px">${envChart()}</div>
+    <div class="toolbar" style="margin-bottom:4px"><button class="btn primary small" data-form="reading">录入环境数据</button></div>
+    ${mSection('环境记录','温度 / 湿度 / CO₂ / 光照')}
+    <div class="m-list">${readings.length?readings.map(r=>`<div class="m-row"><div class="grow"><b>${esc(r.device_name||'未命名设备')} · ${esc(baseName(r.base_id))}</b><small>${esc(dateOnly(r.recorded_at))} ${esc(String(r.recorded_at||'').slice(11,16))} · ${esc(r.temperature??'--')}°C · ${esc(r.humidity??'--')}% · CO₂ ${esc(r.co2??'--')}ppm</small></div><button class="link danger" data-del="readings:${r.id}">删除</button></div>`).join(''):empty('暂无环境数据','请先新增基地，再录入设备名称和环境指标。')}</div>
+    ${mSection('待处理预警','预警由后台规则自动生成')}
+    <div class="m-list">${alerts.length?alerts.map(a=>`<div class="m-row"><span class="dot ${a.level==='high'?'red':'warn'}" style="margin-top:6px"></span><div class="grow"><b>${esc(a.message)}</b><small>${esc(a.base_name||baseName(a.base_id))} · ${esc(a.alert_type)}</small></div><button class="link" data-ack="${a.id}">处理</button></div>`).join(''):empty('暂无待处理预警','环境数据超过阈值后会自动生成预警。')}</div>
+  </section>`
+}
+function renderMobileTrace(){
+  const result=state.traceResult;
+  let body=empty('输入批次编号后查询','批次、基地、生产事件和产品信息均来自后台数据库。');
+  if(result){
+    const events=result.events||[],products=result.products||[],batch=result.batch;
+    body=`<div class="m-card"><div class="m-card-top"><div><b>${esc(batch.mushroom_type)} · ${esc(batch.code)}</b><div class="m-card-meta">${esc(batch.base_name||'未关联基地')}${batch.base_address?' · '+esc(batch.base_address):''}</div></div>${badge('数据库记录','gray')}</div><div style="margin-top:10px">${stageDots(batch.stage)}</div></div>
+    ${mSection('生产事件',`${events.length} 条溯源记录`)}
+    <div class="m-list">${events.length?events.map(e=>`<div class="m-row"><span class="dot" style="margin-top:6px"></span><div class="grow"><b>${esc(e.title)}</b><small>${esc(e.description||e.event_type)} · ${esc(dateOnly(e.event_date))}</small></div><button class="link danger" data-del="trace-events:${e.id}">删除</button></div>`).join(''):empty('该批次暂无溯源事件','点击上方「新增溯源事件」补录生产记录。')}</div>
+    <div class="m-card" style="margin-top:14px;text-align:center"><div class="qr"><img id="traceQr" alt="溯源二维码"></div><div class="m-card-meta" style="margin-top:10px">扫码查看「${esc(batch.code)}」的完整生产记录</div></div>
+    ${products.length?`${mSection('该批次产品',`${products.length} 个产品`)}<div class="m-list">${products.map(p=>`<div class="m-row"><div class="grow"><b>${esc(p.name)}</b><small>${esc(p.quantity)} ${esc(p.unit)} · ¥${money(p.price)}/${esc(p.unit)}</small></div>${stateBadge(p)}</div>`).join('')}</div>`:''}`;
+  }
+  return `<section class="page m-page">
+    <div class="m-page-title"><h1>质量溯源</h1><p>按真实批次查看生产全过程</p></div>
+    <div class="m-search"><div class="search">${ico('search')}<input id="traceCode" placeholder="输入批次编号" value="${esc(state.traceCode||'')}"></div><button class="btn primary small" data-trace-search>查询</button></div>
+    <button class="btn small" data-form="trace-event" style="margin-bottom:14px">新增溯源事件</button>
+    ${body}
+  </section>`
+}
+function renderMobileMarket(){
+  const products=state.data.products,demands=state.data.demands;
+  return `<section class="page m-page">
+    <div class="m-page-title"><h1>产销对接</h1><p>供应信息与采购需求</p></div>
+    <div class="toolbar" style="margin-bottom:14px"><button class="btn small" data-form="demand">发布采购需求</button><button class="btn primary small" data-form="product">发布供应</button></div>
+    ${mSection('供应信息','只展示后台已保存的真实供应数据')}
+    ${products.length?products.map(p=>`<article class="m-card">
+      <div class="m-card-top"><div style="display:flex;gap:10px;min-width:0"><div class="product-icon" style="width:38px;height:38px">${iconHtml(p.icon,p.name)}</div><div style="min-width:0"><b>${esc(p.name)}</b><div class="m-card-meta">批次 ${esc(batchCode(p.batch_id))}</div></div></div>${stateBadge(p)}</div>
+      <div class="m-figures"><div><span>数量</span><b>${esc(p.quantity)} ${esc(p.unit)}</b></div><div><span>价格</span><b>¥${money(p.price)}</b></div><div><span>上架</span><b>${esc(dateOnly(p.available_date)||'未设置')}</b></div></div>
+      <p class="m-card-meta" style="margin-top:10px">${esc(p.description||'暂无说明')}</p>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:8px"><div class="qr-mini"><img data-qr-batch="${esc(batchCode(p.batch_id)==='未关联批次'?'':batchCode(p.batch_id))}" alt="产品溯源二维码"></div><span class="m-card-meta" style="margin:0">包装贴码，买家可查批次记录</span></div>
+      <div class="m-card-actions"><button class="link" data-edit="product:${p.id}">修改</button><button class="link" data-edit-icon="${p.id}">换图标</button><button class="link danger" data-del="products:${p.id}">删除</button></div>
+    </article>`).join(''):empty('暂无供应信息','点击发布供应，保存真实产品、数量、价格和批次。')}
+    ${mSection('采购需求','采购商通过表单录入并保存到数据库')}
+    ${demands.length?demands.map(d=>`<div class="m-card"><div class="m-card-top"><div><b>${esc(d.buyer_name)}</b><div class="m-card-meta">${esc(d.product_name)} · ${esc(d.quantity)} ${esc(d.unit)}</div></div>${badge('¥'+money(d.price))}</div><p class="m-card-meta" style="margin-top:8px">${esc(d.requirements||'暂无补充要求')}</p><div class="m-card-actions"><button class="link" data-edit="demand:${d.id}">修改</button><button class="link danger" data-del="demands:${d.id}">删除</button></div></div>`).join(''):empty('暂无采购需求','点击发布采购需求，保存真实采购方和产品需求。')}
+  </section>`
+}
+function renderMobileExpert(){
+  const qs=state.data.questions;
+  const baseOptions=['<option value="">不关联基地</option>'].concat(state.data.bases.map(b=>`<option value="${b.id}">${esc(b.name)}</option>`)).join('');
+  const categoryOptions=['病虫害防治','环境调控','生产流程','设备使用','市场销售'].map(v=>`<option>${v}</option>`).join('');
+  return `<section class="page m-page">
+    <div class="m-page-title"><h1>专家问答</h1><p>AI 自动作答，专家可补充回复</p></div>
+    <div class="m-card">
+      <div class="field"><label>问题标题</label><input id="askTitle" placeholder="例如：叶片发黄 / 菌棒发绿霉怎么办"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px"><div class="field"><label>问题类型</label><select id="askCategory">${categoryOptions}</select></div><div class="field"><label>关联基地</label><select id="askBase">${baseOptions}</select></div></div>
+      <div class="field" style="margin-top:12px"><label>问题描述</label><textarea id="askContent" placeholder="补充温度、湿度等环境情况"></textarea></div>
+      <button class="btn primary block" id="askSubmit" style="margin-top:14px">提交提问</button>
+    </div>
+    ${mSection('问答记录',`${qs.length} 条`)}
+    ${qs.length?qs.map(q=>`<div class="m-card"><div class="m-card-top"><div><b>${esc(q.title)}</b><div class="m-card-meta">${esc(baseName(q.base_id))} · ${esc(q.category||'未分类')}</div></div>${badge(q.status==='answered'?'已回复':'待回复',q.status==='answered'?'pos':'warn')}</div><p class="m-card-meta" style="margin-top:8px">${esc(q.content)}</p>${q.answer?`<div class="notice pos" style="margin:10px 0 0;font-size:12px">专家回复：${esc(q.answer)}</div>`:''}<div class="m-card-actions"><button class="link danger" data-del="questions:${q.id}">删除</button></div></div>`).join(''):empty('暂无问答记录','在上方输入问题提交即可，AI 会立即回答并存档。')}
+  </section>`
+}
+function renderMobileAccounts(){
+  if(!state.user||state.user.role!=='admin'){
+    return `<section class="page m-page">
+      <div class="m-page-title"><h1>账号与职位</h1><p>仅有平台管理员可以进入</p></div>
+      <div class="m-card"><div class="notice">职位分配与密码重置仅对平台管理员开放。验证后进入，当前登录会被替换为该管理员。</div><button class="btn primary" id="verifyAdmin">验证管理员身份</button></div>
+    </section>`
+  }
+  return `<section class="page m-page">
+    <div class="m-page-title"><h1>账号与职位</h1><p>调整账号职位、重置登录密码</p></div>
+    <div class="m-search"><div class="search">${ico('search')}<input id="userSearch" placeholder="搜索账号或称呼"></div><button class="btn small" id="refreshUsers">刷新</button></div>
+    <div class="notice">职位修改后，对方重新登录生效。密码只能重置，无法查看原密码。</div>
+    <div class="m-card" style="padding:0;overflow:hidden"><div id="userList"><div class="loading">正在读取账号列表</div></div></div>
+    <span class="muted" id="userCount" style="display:block;font-size:11px;margin:8px 2px"></span>
+  </section>`
+}
+
+function render(){
+  if(!state.token){renderLogin();return}
+  document.body.classList.remove('on-login');
+  const titles=pageMeta[state.page]||pageMeta.home;
+  document.title=titles[0]+' · 田序';
+  $('#navTitle').textContent=titles[0];
+  $$('.nav [data-page], .m-tabbar [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===state.page));
+  updateSidebar();
+  if(state.loading){$('#app').innerHTML='<div class="loading">正在读取后台数据</div>';return}
+  if(state.error){$('#app').innerHTML=`<section class="page"><div class="error"><b>后台连接失败</b><br>${esc(state.error)}<br><br>请在项目目录运行 <code>npm start</code>，再访问 http://localhost:3000。</div></section>`;return}
+  const renderers=state.mobile
+    ?{home:renderMobileHome,production:renderMobileProduction,monitor:renderMobileMonitor,trace:renderMobileTrace,market:renderMobileMarket,expert:renderMobileExpert,accounts:renderMobileAccounts}
+    :{home:renderHome,production:renderProduction,monitor:renderMonitor,trace:renderTrace,market:renderMarket,expert:renderExpert,accounts:renderAccounts};
+  const fallback=state.mobile?renderMobileHome:renderHome;
+  $('#app').innerHTML=(renderers[state.page]||fallback)();
+  fillIcons($('#app'));
+  if(state.page==='trace'&&state.traceResult)makeTraceQr();
+  if(state.page==='market')makeProductQrs();
+  if(state.page==='accounts'&&state.user&&state.user.role==='admin')loadUsers();
+}
+window.matchMedia('(max-width:860px)').addEventListener('change',event=>{state.mobile=event.matches;if(state.token)render()});
+function updateSidebar(){
+  const name=accountName();
+  $('#sideAvatar').textContent=(name||'菇').slice(0,1);
+  $('#sideUserName').textContent=name;
+  $('#sideUserRole').textContent=state.user?.role_label||state.user?.role||'请先登录';
+  const mobileAvatar=$('#mobileAvatar');if(mobileAvatar)mobileAvatar.textContent=(name||'菇').slice(0,1);
+  const d=state.data.dashboard||{};
+  const count=d.openAlerts??0;
+  const el=$('#navAlertCount');el.textContent=count>0?String(count):'';el.dataset.empty=count>0?'0':'1';
+}
+function makeProductQrs(){
+  if(typeof qrcode!=='function')return;
+  $$('#app img[data-qr-batch]').forEach(img=>{
+    const code=img.getAttribute('data-qr-batch');
+    if(!code||img.src)return;
+    try{const qr=qrcode(0,'M');qr.addData(location.origin+'/trace.html?code='+encodeURIComponent(code));qr.make();img.src=qr.createDataURL(5,8)}catch(error){}
+  })
+}
+function makeTraceQr(){
+  const img=document.getElementById('traceQr');
+  if(!img||typeof qrcode!=='function')return;
+  const url=location.origin+'/trace.html?code='+encodeURIComponent(state.traceCode||'');
+  try{const qr=qrcode(0,'M');qr.addData(url);qr.make();img.src=qr.createDataURL(6,10)}catch(error){img.alt='二维码生成失败'}
+}
+function options(items,valueKey,labelKey,placeholder='请选择'){
+  return `<option value="">${esc(placeholder)}</option>`+items.map(item=>`<option value="${esc(item[valueKey])}">${esc(item[labelKey])}</option>`).join('')
+}
+const formConfigs={
+ base:{title:'新增基地',desc:'保存真实基地信息',endpoint:'/api/bases',fields:[
+  {name:'name',label:'基地名称',required:true,full:true},{name:'township',label:'所属乡镇'},{name:'area_mu',label:'面积（亩）',type:'number'},{name:'address',label:'详细地址',full:true},{name:'contact_name',label:'联系人'},{name:'contact_phone',label:'联系电话'},{name:'notes',label:'备注',type:'textarea',full:true}
+ ]},
+ batch:{title:'新增生产批次',desc:'批次编号必须唯一',endpoint:'/api/batches',fields:[
+  {name:'code',label:'批次编号',required:true},{name:'base_id',label:'所属基地',type:'select',options:()=>options(state.data.bases,'id','name','请选择基地'),required:true},{name:'crop_category',label:'品类大类',type:'select',options:()=>Object.entries(CROP_LABELS).map(([k,v])=>'<option value="'+k+'"'+(k==='mushroom'?' selected':'')+'>'+v+'</option>').join(''),required:true},{name:'mushroom_type',label:'具体品类',required:true},{name:'variety',label:'品种（可选）'},{name:'quantity',label:'种植规模（株 / 棒）',type:'number',required:true},{name:'stage',label:'当前阶段',type:'select',options:()=>STAGES.map(v=>`<option>${v}</option>`).join('')},{name:'start_date',label:'入库日期',type:'date',required:true,value:today()},{name:'expected_harvest_date',label:'预计采收日期',type:'date'},{name:'notes',label:'备注',type:'textarea',full:true}
+ ]},
+ reading:{title:'录入环境数据',desc:'超过阈值时后台自动生成预警',endpoint:'/api/readings',fields:[
+  {name:'base_id',label:'所属基地',type:'select',options:()=>options(state.data.bases,'id','name','请选择基地'),required:true},{name:'device_name',label:'设备名称',required:true},{name:'temperature',label:'温度（°C）',type:'number',step:'0.1'},{name:'humidity',label:'湿度（%）',type:'number',step:'0.1'},{name:'co2',label:'CO₂（ppm）',type:'number',step:'1'},{name:'light',label:'光照（lux）',type:'number',step:'1'},{name:'recorded_at',label:'记录时间',type:'datetime-local',value:nowLocal(),required:true,full:true},{name:'notes',label:'备注',type:'textarea',full:true}
+ ]},
+ question:{title:'提交问题（AI 自动作答）',desc:'提交后 AI 会立即自动回答并存档',endpoint:'/api/questions',fields:[
+  {name:'base_id',label:'所属基地',type:'select',options:()=>options(state.data.bases,'id','name','不关联基地')},{name:'title',label:'问题标题',required:true,full:true},{name:'category',label:'问题类型',type:'select',options:()=>['病虫害防治','环境调控','生产流程','设备使用','市场销售'].map(v=>`<option>${v}</option>`).join('')},{name:'content',label:'问题描述',type:'textarea',required:true,full:true}
+ ]},
+ 'trace-event':{title:'新增溯源事件',desc:'溯源事件会绑定到具体批次',endpoint:'/api/trace-events',fields:[
+  {name:'batch_id',label:'所属批次',type:'select',options:()=>options(state.data.batches,'id','code','请选择批次'),required:true,full:true},{name:'event_type',label:'事件类型',type:'select',options:()=>['入库','育苗','定植','施肥','灌溉','成熟','采收','质检','出库','运输'].map(v=>`<option>${v}</option>`).join('')},{name:'title',label:'事件标题',required:true},{name:'event_date',label:'事件日期',type:'date',value:today(),required:true},{name:'operator',label:'操作人'},{name:'description',label:'事件说明',type:'textarea',full:true}
+ ]},
+ product:{title:'发布供应信息',editTitle:'修改供应信息',desc:'供应信息必须关联真实批次',endpoint:'/api/products',fields:[
+  {name:'batch_id',label:'所属批次',type:'select',options:()=>options(state.data.batches,'id','code','请选择批次'),required:true,full:true},{name:'name',label:'产品名称',required:true},{name:'icon',label:'产品图标（品类图，也可上传实拍图）',type:'select',options:()=>Object.keys(CROP_SVG).map(v=>`<option value="${v}">${PRODUCT_ICON_LABELS[v]||v}</option>`).join('')},{name:'quantity',label:'数量',type:'number',required:true},{name:'unit',label:'单位',type:'select',options:()=>['kg','500g','棒','箱','吨'].map(v=>`<option>${v}</option>`).join('')},{name:'price',label:'参考价格',type:'number',step:'0.01'},{name:'available_date',label:'上架日期',type:'date'},{name:'off_shelf_date',label:'下架日期',type:'date'},{name:'icon_file',label:'上传产品图标（可选，最大 4MB）',type:'file',full:true},{name:'description',label:'产品说明',type:'textarea',full:true}
+ ]},
+ demand:{title:'发布采购需求',editTitle:'修改采购需求',desc:'采购需求将保存到数据库',endpoint:'/api/demands',fields:[
+  {name:'buyer_name',label:'采购方名称',required:true},{name:'product_name',label:'采购产品',required:true},{name:'quantity',label:'采购数量',type:'number',required:true},{name:'unit',label:'单位',type:'select',options:()=>['kg','500g','棒','箱','吨'].map(v=>`<option>${v}</option>`).join('')},{name:'price',label:'意向价格',type:'number',step:'0.01'},{name:'contact',label:'联系方式'},{name:'requirements',label:'具体要求',type:'textarea',full:true}
+ ]},
+ task:{title:'新增生产任务',desc:'可保存任务并调用优先级建议',endpoint:'/api/tasks',fields:[
+  {name:'title',label:'任务标题',required:true,full:true},{name:'description',label:'任务说明',type:'textarea',full:true},{name:'batch_id',label:'关联批次',type:'select',options:()=>options(state.data.batches,'id','code','不关联批次')},{name:'due_date',label:'截止日期',type:'date'},{name:'priority',label:'优先级',type:'select',options:()=>['high','medium','low'].map(v=>`<option value="${v}">${v}</option>`).join('')}
+ ]},
+ partner:{title:'新增合作方',desc:'保存真实合作单位或专家团队',endpoint:'/api/partners',fields:[{name:'name',label:'合作方名称',required:true,full:true},{name:'role',label:'合作角色'},{name:'contact',label:'联系方式'}]}
+};
+const menuTypes=[['base','基地'],['batch','生产批次'],['reading','环境数据'],['question','专家问题'],['trace-event','溯源事件'],['product','供应信息'],['demand','采购需求'],['task','生产任务'],['partner','合作方']];
+function selectHtml(field,value){
+  const html=field.options?field.options():'';
+  const v=value===null||value===undefined||value===''?'':String(value);
+  if(!v)return html;
+  const quoted=`value="${esc(v)}"`;
+  if(html.includes(quoted))return html.replace(quoted,`${quoted} selected`);
+  const plain=`<option>${esc(v)}</option>`;
+  if(html.includes(plain))return html.replace(plain,`<option selected>${esc(v)}</option>`);
+  return html;
+}
+function fieldHtml(field){
+  const required=field.required?'required':'';
+  const full=field.full?'full':'';
+  const value=field.value??'';
+  if(field.type==='textarea')return `<div class="field ${full}"><label>${esc(field.label)}</label><textarea name="${field.name}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" ${required}>${esc(value)}</textarea></div>`;
+  if(field.type==='select')return `<div class="field ${full}"><label>${esc(field.label)}</label><select name="${field.name}" ${required}>${selectHtml(field,value)}</select></div>`;
+  if(field.type==='file')return `<div class="field ${full}"><label>${esc(field.label)}</label><input type="file" name="${field.name}" accept="image/jpeg,image/png,image/webp,image/gif"></div>`;
+  return `<div class="field ${full}"><label>${esc(field.label)}</label><input type="${field.type||'text'}" name="${field.name}" value="${esc(value)}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" ${field.step?`step="${field.step}"`:''} ${required}></div>`;
+}
+function recordFieldValue(field,record){
+  const raw=record[field.name];
+  if(raw===null||raw===undefined)return field.value??'';
+  if(field.type==='date')return dateOnly(raw);
+  if(field.type==='datetime-local')return String(raw).slice(0,16);
+  return String(raw);
+}
+function openSheet(type,record){
+ const config=formConfigs[type];
+ const sheetBody=$('#sheetBody');
+ const editing=!!record;
+ if(type==='menu'){
+  $('#sheetTitle').textContent='新增数据';$('#sheetDesc').textContent='选择要保存到后台数据库的记录类型';
+  sheetBody.innerHTML=`<div class="form-grid">${menuTypes.map(([key,label])=>`<button class="btn" data-form="${key}">${label}</button>`).join('')}</div><div class="sheet-actions"><button class="btn" data-close-sheet>取消</button></div>`;
+ }else if(config){
+  if(['batch','reading'].includes(type)&&!state.data.bases.length){toast('请先新增基地',true);return}
+  if(['trace-event','product'].includes(type)&&!state.data.batches.length){toast('请先新增生产批次',true);return}
+  $('#sheetTitle').textContent=editing?(config.editTitle||'修改'+config.title):config.title;
+  $('#sheetDesc').textContent=editing?'带出原来的内容，保存后会覆盖原记录。':config.desc;
+  const fields=config.fields.map(field=>{
+   if(!editing)return field;
+   const next={...field,value:recordFieldValue(field,record)};
+   if(field.name==='icon'){next.value=iconNameOf(record.icon);next.options=()=>'<option value="">保持原图标不变</option>'+(field.options?field.options():'')}
+   return next;
+  });
+  const submitText=editing?'保存修改':'保存到后台';
+  sheetBody.innerHTML=`<form id="recordForm"><div class="form-grid">${fields.map(fieldHtml).join('')}</div><div class="sheet-actions"><button type="button" class="btn" data-close-sheet>取消</button><button type="submit" class="btn primary">${submitText}</button></div></form>`;
+  $('#recordForm').addEventListener('submit',async event=>{event.preventDefault();const form=event.currentTarget;const submit=form.querySelector('[type="submit"]');submit.disabled=true;submit.textContent='保存中';try{const payload=Object.fromEntries(new FormData(form).entries());const file=form.querySelector('input[type="file"]')?.files?.[0];delete payload.icon_file;if(file)payload.icon=await uploadImage(file);if(editing&&payload.icon==='')delete payload.icon;await api(editing?`${config.endpoint}/${record.id}`:config.endpoint,{method:editing?'PUT':'POST',body:JSON.stringify(payload)});closeSheet();toast(editing?'修改已保存':'保存成功');await loadAll()}catch(error){toast(error.message,true);submit.disabled=false;submit.textContent=submitText}});
+ }
+ $('#sheetMask').classList.add('open');
+}
+function closeSheet(){$('#sheetMask').classList.remove('open')}
+function go(page){
+  if(!state.token){toast('请先登录账号',true);renderLogin();return}
+  state.page=page;closeSheet();render();$('#app').scrollTop=0
+}
+function uploadImage(file){return new Promise((resolve,reject)=>{if(file.size>4*1024*1024)return reject(new Error('图片不能超过 4MB'));const reader=new FileReader();reader.onerror=()=>reject(new Error('图片读取失败'));reader.onload=async()=>{try{const result=await api('/api/uploads',{method:'POST',body:JSON.stringify({data:reader.result})});resolve(result.url)}catch(error){reject(error)}};reader.readAsDataURL(file)})}
+function iconHtml(icon,alt='产品图标'){const raw=String(icon||'').trim();if(raw&&(raw.startsWith('http')||raw.startsWith('/')))return `<img src="${esc(raw)}" alt="${esc(alt)}">`;return productIconSvg(iconNameOf(raw)||'mushroom',24)}
+function openIconEditor(id){const product=state.data.products.find(item=>item.id===Number(id));if(!product)return;const presets=Object.keys(CROP_SVG);let selected=iconNameOf(product.icon);$('#sheetTitle').textContent='更换产品图标';$('#sheetDesc').textContent='选择预设图标，或上传自己的图片，保存后写入后台。';$('#sheetBody').innerHTML=`<div class="icon-preview" id="iconPreview">${iconHtml(selected,product.name)}</div><div class="preset-icons">${presets.map(icon=>`<button type="button" data-icon-choice="${icon}" class="${icon===selected?'active':''}" title="${PRODUCT_ICON_LABELS[icon]||icon}">${productIconSvg(icon,22)}</button>`).join('')}</div><div class="field" style="margin-top:16px"><label>上传图片</label><input id="iconFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div><div class="sheet-actions"><button type="button" class="btn" data-close-sheet>取消</button><button type="button" class="btn primary" id="saveIcon">保存图标</button></div>`;$('#sheetMask').classList.add('open');$$('[data-icon-choice]').forEach(button=>button.addEventListener('click',()=>{selected=button.dataset.iconChoice;$$('[data-icon-choice]').forEach(item=>item.classList.toggle('active',item===button));$('#iconPreview').innerHTML=iconHtml(selected,product.name)}));$('#iconFile').addEventListener('change',event=>{const file=event.target.files?.[0];if(file){const url=URL.createObjectURL(file);$('#iconPreview').innerHTML=`<img src="${url}" alt="预览">`}});$('#saveIcon').addEventListener('click',async()=>{const button=$('#saveIcon');button.disabled=true;button.textContent='保存中';try{const file=$('#iconFile').files?.[0];const icon=file?await uploadImage(file):selected;await api(`/api/products/${product.id}`,{method:'PUT',body:JSON.stringify({icon})});closeSheet();toast('产品图标已更新');await loadAll()}catch(error){toast(error.message,true);button.disabled=false;button.textContent='保存图标'}})}
+function askConfirm(message,confirmText='确定'){
+ return new Promise(resolve=>{
+  const mask=document.createElement('div');
+  mask.style.cssText='position:fixed;inset:0;z-index:400;background:rgba(31,27,22,.4);display:flex;align-items:center;justify-content:center;padding:24px';
+  mask.innerHTML=`<div style="width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px"><div style="font-size:15px;font-weight:500;margin-bottom:8px">请确认</div><div style="font-size:13px;line-height:1.7;color:var(--ink2)">${esc(message)}</div><div style="display:flex;gap:8px;margin-top:20px;justify-content:flex-end"><button type="button" data-cancel class="btn">取消</button><button type="button" data-ok class="btn primary">${esc(confirmText)}</button></div></div>`;
+  const done=value=>{mask.remove();resolve(value)};
+  mask.querySelector('[data-cancel]').addEventListener('click',()=>done(false));
+  mask.querySelector('[data-ok]').addEventListener('click',()=>done(true));
+  mask.addEventListener('click',event=>{if(event.target===mask)done(false)});
+  document.body.appendChild(mask);
+ })
+}
+document.addEventListener('click',async event=>{
+ const pageButton=event.target.closest('[data-page]');if(pageButton){go(pageButton.dataset.page);return}
+ const formButton=event.target.closest('[data-form]');if(formButton){openSheet(formButton.dataset.form);return}
+ const iconButton=event.target.closest('[data-edit-icon]');if(iconButton){openIconEditor(iconButton.dataset.editIcon);return}
+ const editButton=event.target.closest('[data-edit]');
+ if(editButton){
+  const parts=editButton.dataset.edit.split(':');
+  const list=parts[0]==='product'?state.data.products:state.data.demands;
+  const record=(list||[]).find(item=>item.id===Number(parts[1]));
+  if(!record){toast('记录不存在',true);return}
+  openSheet(parts[0],record);return
+ }
+ if(event.target.closest('[data-close-sheet]')||event.target===$('#sheetMask')){closeSheet();return}
+ const eye=event.target.closest('[data-pwd]');
+ if(eye){const input=document.getElementById(eye.dataset.pwd);if(input){const show=input.type==='password';input.type=show?'text':'password';eye.innerHTML=show?EYE_OPEN:EYE_CLOSED}return}
+ const resetPw=event.target.closest('[data-reset-pw]');
+ if(resetPw){openResetPassword(Number(resetPw.dataset.resetPw));return}
+ const resetConfirm=event.target.closest('[data-reset-confirm]');
+ if(resetConfirm){
+  const id=resetConfirm.dataset.resetConfirm;
+  const input=document.getElementById('newpwd_'+id);
+  const value=input.value;
+  if(value.length<6){toast('新密码至少 6 位',true);return}
+  if(!await askConfirm('重置提醒：确定重置该账号的登录密码吗？重置后原密码立即失效，请把新密码告知对方。','确定重置'))return;
+  const button=resetConfirm;button.disabled=true;
+  try{await api('/api/admin/users/'+id+'/password',{method:'PUT',body:JSON.stringify({password:value})});closeSheet();toast('密码已重置，请把新密码告知对方')}
+  catch(error){toast(error.message,true);button.disabled=false}
+  return
+ }
+ if(event.target.closest('#askSubmit')){
+  const title=$('#askTitle').value.trim(),content=$('#askContent').value.trim();
+  if(!title||!content){toast('请填写问题标题和问题描述',true);return}
+  try{
+   await api('/api/questions',{method:'POST',body:JSON.stringify({title,content,category:$('#askCategory').value,base_id:$('#askBase').value||null})});
+   toast('提问成功，AI 已自动作答');await loadAll();
+  }catch(error){toast(error.message,true)}
+  return
+ }
+ if(event.target.closest('#refreshUsers')){loadUsers();return}
+ if(event.target.closest('#verifyAdmin')){openAdminLogin();return}
+ const del=event.target.closest('[data-del]');if(del){const parts=del.dataset.del.split(':');if(!await askConfirm('删除提醒：确定删除这条记录吗？删除后不可恢复。','确定删除'))return;try{await api(`/api/${parts[0]}/${parts[1]}`,{method:'DELETE'});toast('已删除');await loadAll()}catch(error){toast(error.message,true)}return}
+ const ack=event.target.closest('[data-ack]');if(ack){try{await api(`/api/alerts/${ack.dataset.ack}/ack`,{method:'POST',body:'{}'});toast('预警已处理');await loadAll()}catch(error){toast(error.message,true)}return}
+ const search=event.target.closest('[data-trace-search]');if(search){const code=$('#traceCode').value.trim();if(!code){toast('请输入批次编号',true);return}try{state.traceCode=code;state.traceResult=await api(`/api/trace/${encodeURIComponent(code)}`);render();toast('查询成功')}catch(error){state.traceResult=null;render();toast(error.message,true)}return}
+});
+document.addEventListener('change',async event=>{
+ const select=event.target.closest('[data-role-select]');
+ if(!select)return;
+ const id=Number(select.dataset.roleSelect);
+ const role=select.value;
+ const prev=select.dataset.current;
+ if(role===prev)return;
+ const target=state.users.find(u=>u.id===id);
+ const label=(ALL_ROLES.find(r=>r.value===role)||{}).label||role;
+ try{
+  await api('/api/admin/users/'+id+'/role',{method:'PUT',body:JSON.stringify({role})});
+  if(target){target.role=role;target.role_label=label}
+  select.dataset.current=role;
+  toast('职位已更新，对方重新登录后生效');
+  if(state.user&&state.user.id===id){state.user.role=role;state.user.role_label=label;localStorage.setItem('gushi_user',JSON.stringify(state.user));render()}
+ }catch(error){select.value=prev;toast(error.message,true)}
+});
+document.addEventListener('input',event=>{
+ if(event.target.id==='userSearch')renderUserRows(event.target.value);
+});
+$('#addButton').addEventListener('click',()=>openSheet('menu'));
+/* ---------- 账号：登录 / 注册 / 退出 ---------- */
+function saveAuth(data){state.token=data.token;state.user=data.user;localStorage.setItem('gushi_token',data.token);localStorage.setItem('gushi_user',JSON.stringify(data.user))}
+function clearAuth(){state.token='';state.user=null;localStorage.removeItem('gushi_token');localStorage.removeItem('gushi_user')}
+const REGISTER_ROLES=[
+ {value:'farmer',label:'菇农（普通用户）',desc:'可录入基地、批次、环境、溯源、任务、设备，可发布供应信息在市场卖菇；采购需求仅可浏览，不能回复提问'},
+ {value:'base',label:'合作社/基地管理员',desc:'业务数据全部可录，可发布供应与采购需求；不能回复提问'},
+ {value:'buyer',label:'采购商',desc:'可发布采购需求；基地、批次、溯源、供应仅可浏览，不能回复提问'},
+ {value:'expert',label:'专家',desc:'可回答农技提问、查看授权批次；不能录入生产与销售数据'},
+ {value:'government',label:'政府/服务机构',desc:'全站只读：可查看基地、批次、环境、溯源与产销数据，不能修改'}
+];
+const ALL_ROLES=[{value:'farmer',label:'菇农'},{value:'base',label:'基地管理员'},{value:'expert',label:'专家'},{value:'buyer',label:'采购商'},{value:'government',label:'政府/服务机构'},{value:'admin',label:'平台管理员'}];
+const EYE_OPEN='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6.2 9.5-6.2S21.5 12 21.5 12s-3.5 6.2-9.5 6.2S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.7"/></svg>';
+const EYE_CLOSED='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11.5c2.4 3 5.2 4.5 8.5 4.5s6.1-1.5 8.5-4.5"/><path d="M5.8 14.3l-1.9 2.6M12 16.2v3.2M18.2 14.3l1.9 2.6"/></svg>';
+
+async function loadUsers(){
+  const box=$('#userList');if(!box)return;
+  box.innerHTML='<div class="loading">正在读取账号列表</div>';
+  try{
+    state.users=await api('/api/admin/users');
+    renderUserRows($('#userSearch')?$('#userSearch').value:'');
+  }catch(error){
+    box.innerHTML=`<div class="notice">${esc(error.message)}</div>`;
+  }
+}
+function renderUserRows(keyword=''){
+  const box=$('#userList');if(!box)return;
+  const q=(keyword||'').trim();
+  const list=state.users.filter(u=>!q||u.username.includes(q)||(u.display_name||'').includes(q));
+  const count=$('#userCount');if(count)count.textContent=`${list.length} / ${state.users.length} 个账号`;
+  if(!list.length){box.innerHTML=empty('没有匹配的账号','换一个账号关键字再试。');return}
+  if(state.mobile){
+    box.innerHTML=list.map(u=>`<div class="m-account-row"><span class="avatar">${esc((u.display_name||u.username||'菇').slice(0,1))}</span><div class="grow"><b>${esc(u.username)}${state.user&&u.id===state.user.id?'（我）':''}</b><small>${esc(u.display_name||'未填称呼')}</small></div><div class="m-account-actions"><select class="select" data-role-select="${u.id}" data-current="${esc(u.role)}">${ALL_ROLES.map(r=>`<option value="${r.value}" ${u.role===r.value?'selected':''}>${esc(r.label)}</option>`).join('')}</select><button class="link" data-reset-pw="${u.id}">重置密码</button></div></div>`).join('');
+    return;
+  }
+  box.innerHTML=`<div class="table-wrap"><table class="table account-table"><thead><tr><th>账号</th><th>当前职位</th><th>创建时间</th><th class="right">操作</th></tr></thead><tbody>
+    ${list.map(u=>`<tr>
+      <td><div class="account-who"><span class="avatar">${esc((u.display_name||u.username||'菇').slice(0,1))}</span><span><b>${esc(u.username)}${state.user&&u.id===state.user.id?'（我）':''}</b><small>${esc(u.display_name||'未填称呼')}</small></span></div></td>
+      <td><select class="select" data-role-select="${u.id}" data-current="${esc(u.role)}">${ALL_ROLES.map(r=>`<option value="${r.value}" ${u.role===r.value?'selected':''}>${esc(r.label)}</option>`).join('')}</select></td>
+      <td class="num muted nowrap">${esc(dateOnly(u.created_at)||'--')}</td>
+      <td><div class="actions"><button class="link" data-reset-pw="${u.id}">重置密码</button></div></td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
+function openResetPassword(id){
+  const user=state.users.find(u=>u.id===id);
+  $('#sheetTitle').textContent='重置登录密码';
+  $('#sheetDesc').textContent=user?`为「${user.username}」设置新密码，保存后原密码立即失效。`:'';
+  $('#sheetBody').innerHTML=`<div class="field"><label>新密码（至少 6 位）</label><div class="pwd-wrap"><input id="newpwd_${id}" type="password" autocomplete="new-password" placeholder="输入新密码"><button type="button" class="pwd-toggle" data-pwd="newpwd_${id}" aria-label="显示或隐藏密码">${EYE_CLOSED}</button></div></div>
+  <div class="notice" style="margin-top:16px">密码以加密形式保存，任何人都无法查看原密码。重置后请把新密码告知对方。</div>
+  <div class="sheet-actions"><button class="btn" data-close-sheet>取消</button><button class="btn primary" data-reset-confirm="${id}">确认重置</button></div>`;
+  $('#sheetMask').classList.add('open');
+}
+function openAdminLogin(){
+ $('#sheetTitle').textContent='管理员登录';
+ $('#sheetDesc').textContent='分配职位需要平台管理员身份：验证通过后自动切换登录并打开账号与职位。当前登录会被替换。';
+ $('#sheetBody').innerHTML=`
+  <div class="field"><label>管理员账号</label><input id="adminUser" placeholder="例如：demo"></div>
+  <div class="field" style="margin-top:16px"><label>管理员密码</label><div class="pwd-wrap"><input id="adminPwd" type="password" placeholder="至少 6 位"><button type="button" class="pwd-toggle" data-pwd="adminPwd" aria-label="显示或隐藏密码">${EYE_CLOSED}</button></div></div>
+  <div class="notice" style="margin-top:16px">还没有管理员？在电脑上进入「后台」目录执行 <code>npm run make:admin -- 账号</code>。自助注册的账号不是管理员。</div>
+  <div class="sheet-actions"><button class="btn" data-close-sheet>取消</button><button class="btn primary" id="adminLoginSubmit">登录并进入</button></div>`;
+ $('#sheetMask').classList.add('open');
+ $('#adminLoginSubmit').addEventListener('click',async()=>{
+  const username=$('#adminUser').value.trim(),password=$('#adminPwd').value;
+  if(!username||!password){toast('请填写管理员账号和密码',true);return}
+  try{
+   const data=await api('/api/auth/login',{method:'POST',body:JSON.stringify({username,password})});
+   if(data.user.role!=='admin'){toast('该账号是「'+(data.user.role_label||data.user.role)+'」，不是平台管理员',true);return}
+   saveAuth(data);closeSheet();toast('已切换为管理员账号');await loadAll();go('accounts');
+  }catch(error){toast(error.message,true)}
+ });
+}
+function renderLogin(mode='login'){
+  state.page='login';
+  document.body.classList.add('on-login');
+  document.title=mode==='login'?'登录 · 田序':'注册 · 田序';
+  $('#app').innerHTML=`<section class="auth">
+    <div class="auth-visual">
+      <img class="auth-art" src="/assets/hero-farm.png" alt="" aria-hidden="true">
+        <div class="auth-visual-inner">
+        <div class="auth-top">
+          <div class="auth-brand"><span class="brand-mark"><img src="/assets/logo-mark.png" alt=""></span>田序</div>
+        </div>
+        <div class="auth-copy">
+          <h1>从一棚一田<br>看到每一次采收</h1>
+          <p class="lede">基地、批次、环境、溯源与产销共用同一条数据链。设备自动上报，异常自动预警，记录保存在后台数据库，服务重启不丢失。</p>
+          <ul class="auth-points">
+            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.8 8.4l3.1 3.1 7.3-7.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>批次建档</b>：按品类记录育苗、定植、施肥到采收</span></li>
+            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.8 8.4l3.1 3.1 7.3-7.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>环境预警</b>：设备每 30 秒上报，超阈值自动生成待办</span></li>
+            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.8 8.4l3.1 3.1 7.3-7.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>权限隔离</b>：六种角色各看各的数据，操作全程留痕</span></li>
+          </ul>
+          <div class="auth-stats">
+            <div><b>8</b><span>种植品类</span></div>
+            <div><b>6</b><span>角色权限</span></div>
+            <div><b>30s</b><span>设备刷新</span></div>
+          </div>
+        </div>
+        <div class="auth-stages" aria-label="批次生产阶段">
+          <i class="on"></i><span>育苗</span>
+          <i class="on"></i><span>生长</span>
+          <i class="on"></i><span>成熟</span>
+          <i class="on"></i><span>采收</span>
+          <i></i><span>分级</span>
+          <i></i><span>出库</span>
+        </div>
+      </div>
+    </div>
+    <div class="auth-panel">
+      <div class="auth-m-hero">
+        <div class="auth-m-brand"><span class="brand-mark"><img src="/assets/logo-mark.png" alt=""></span>田序</div>
+        <p class="auth-m-tag">批次 · 环境 · 溯源 · 产销共用一条数据链，设备自动上报，异常自动预警。</p>
+      </div>
+      <div class="auth-card">
+        <div class="auth-head"><h2>${mode==='login'?'登录账号':'注册账号'}</h2><p>${mode==='login'?'使用已有账号进入管理台':'注册成功后自动登录，数据只保存在这个账号下'}</p></div>
+        <form id="authForm" class="form-stack">
+          <div class="field"><label>账号</label><input name="username" autocomplete="username" placeholder="3-32 位字母、数字、下划线或中文"></div>
+          <div class="field"><label>密码</label><div class="pwd-wrap"><input type="password" name="password" id="authPwd" autocomplete="current-password" placeholder="至少 6 位"><button type="button" class="pwd-toggle" data-pwd="authPwd" aria-label="显示或隐藏密码">${EYE_CLOSED}</button></div></div>
+          ${mode==='register'?'<div class="field"><label>称呼（可选）</label><input name="display_name" placeholder="例如：王师傅 / 德安基地"></div>':''}
+          ${mode==='register'?`<div class="field"><label>注册身份</label><div class="role-options" id="registerRoles">${REGISTER_ROLES.map((r,i)=>`<div class="role-option${i===0?' active':''}" data-role-index="${i}">${r.label}</div>`).join('')}</div><span class="field-hint" id="registerRoleDesc">${REGISTER_ROLES[0].desc}</span><span class="field-hint">平台管理员不可自选，其余身份注册后可在账号与职位里调整</span></div>`:''}
+        </form>
+        <button class="btn primary block auth-submit" id="authSubmit">${mode==='login'?'登录':'注册并登录'}</button>
+        <div class="auth-switch">${mode==='login'?'还没有账号？':'已有账号？'}<button id="authSwitch">${mode==='login'?'注册新账号':'返回登录'}</button></div>
+        <p class="auth-hint">忘记密码？请联系平台管理员重置。</p>
+        <div class="auth-demo"><b>演示账号</b><code>demo</code> / <code>demo123456</code><span>演示数据带「演示」标记，可直接删除。</span></div>
+      </div>
+      <p class="auth-foot">数据按账号隔离 · 服务重启不丢失</p>
+      <div class="auth-meta"><span>数据存本机数据库</span><i></i><span>账号之间隔离</span><i></i><span>不依赖第三方云</span></div>
+    </div>
+  </section>`;
+  let registerIdx=0;
+  if(mode==='register'){$$('#registerRoles .role-option').forEach(chip=>chip.addEventListener('click',()=>{registerIdx=Number(chip.dataset.roleIndex);$$('#registerRoles .role-option').forEach(c=>c.classList.toggle('active',c===chip));$('#registerRoleDesc').textContent=REGISTER_ROLES[registerIdx].desc}))}
+  $('#authSwitch').addEventListener('click',()=>renderLogin(mode==='login'?'register':'login'));
+  $('#authSubmit').addEventListener('click',async()=>{
+    const payload=Object.fromEntries(new FormData($('#authForm')).entries());
+    if(mode==='register')payload.role=REGISTER_ROLES[registerIdx].value;
+    if(!payload.username||!payload.password){toast('请填写账号和密码',true);return}
+    const button=$('#authSubmit');button.disabled=true;button.textContent='提交中';
+    try{
+      const data=await api(mode==='login'?'/api/auth/login':'/api/auth/register',{method:'POST',body:JSON.stringify(payload)});
+      saveAuth(data);toast(mode==='login'?'登录成功':'注册成功');await loadAll();
+    }catch(error){toast(error.message,true);button.disabled=false;button.textContent=mode==='login'?'登录':'注册并登录'}
+  });
+  fillIcons($('#app'));
+  $('#app').scrollTop=0;
+}
+function openAccount(){
+  $('#sheetTitle').textContent='当前账号';
+  $('#sheetDesc').textContent=state.user?`${state.user.display_name||state.user.username}（${state.user.username}）`:'未登录';
+  $('#sheetBody').innerHTML=`<div class="notice pos">该账号的基地、批次、环境、溯源、供应和采购记录都保存在后台 SQLite 数据库（server/data/gushi.sqlite），服务重启不会丢失，其他账号看不到。</div>
+  <div class="sheet-actions"><button class="btn" data-close-sheet>关闭</button><button class="btn primary" data-logout>退出登录</button></div>`;
+  $('#sheetMask').classList.add('open');
+}
+document.addEventListener('click',async event=>{
+  if(event.target.closest('#accountButton')||event.target.closest('#mobileAccountButton')){openAccount();return}
+  if(event.target.closest('[data-logout]')){
+    try{await api('/api/auth/logout',{method:'POST',body:'{}'})}catch(error){}
+    clearAuth();closeSheet();renderLogin();toast('已退出登录');
+  }
+});
+fillIcons(document);
+if(state.token){loadAll()}else{renderLogin()}
+</script>
+</body>
+</html>

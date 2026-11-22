@@ -1,1 +1,5 @@
-demo/js/724.2219a285.js.LICENSE.txt
+/*!
+  	Copyright (c) 2018 Jed Watson.
+  	Licensed under the MIT License (MIT), see
+  	http://jedwatson.github.io/classnames
+  */
