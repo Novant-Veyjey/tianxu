@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f5f7">
+<title>产品溯源 · 田序</title>
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --bg:#ecede5;--surface:#fbfcf7;--ink:#22312a;--ink-2:#516255;--muted:#7b8a7f;
+  --line:#e2e6d8;--line-soft:#e9ecdf;--accent:#244d3b;--accent-soft:#e3ebd5;
+  --warn:#b25000;--warn-soft:#fff4e6;--danger:#c8102e;
+  --r-sm:8px;--r-md:12px;--r-lg:18px;
+  --shadow:0 1px 2px rgba(0,0,0,.05);
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Text','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,p,dl,dd,dt,figure{margin:0}
+ol,ul{margin:0;padding:0;list-style:none}
+a{color:var(--accent);text-decoration:none}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+svg{display:block}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* 程序化聚焦的标题只服务读屏，不画焦点框 */
+[tabindex="-1"]:focus,[tabindex="-1"]:focus-visible{outline:none}
+
+/* 顶部品牌条 */
+.topbar{position:sticky;top:0;z-index:10;background:rgba(245,245,247,.86);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line-soft)}
+.topbar-in{max-width:720px;margin:0 auto;height:56px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);min-width:0}
+.brand-mark{width:26px;height:26px;flex:0 0 auto;border-radius:7px;background:#fff;border:1px solid var(--line);object-fit:contain;display:block}
+.brand-name{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.brand-sub{font-size:12px;color:var(--muted);white-space:nowrap;padding-left:10px;border-left:1px solid var(--line)}
+.topbar-back{display:inline-flex;align-items:center;gap:3px;font-size:13px;color:var(--ink-2);white-space:nowrap;padding:6px 6px 6px 4px;border-radius:var(--r-sm);transition:color .16s}
+.topbar-back:hover{color:var(--accent)}
+.topbar-back svg{width:14px;height:14px;color:var(--muted)}
+.topbar-back:hover svg{color:var(--accent)}
+
+/* 版心 */
+.wrap{max-width:720px;margin:0 auto;padding:clamp(24px,6vh,64px) 16px 40px}
+.card{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:22px 18px}
+@media(min-width:600px){.card{padding:28px 26px}.wrap{padding:28px 20px 56px}}
+@media(min-width:1024px){.wrap{padding:clamp(56px,8vh,88px) 20px 72px}}
+@media(max-width:359px){.brand-sub{display:none}.topbar-in{padding:0 14px}}
+
+/* 排版 */
+.eyebrow{font-size:12px;letter-spacing:.05em;color:var(--muted)}
+h1{font-size:23px;line-height:1.3;font-weight:600;letter-spacing:-.015em}
+@media(min-width:600px){h1{font-size:27px}}
+.lede{font-size:15px;color:var(--ink-2);margin-top:10px}
+.note{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.6;overflow-wrap:anywhere}
+.demo-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft);font-size:13px;color:var(--muted)}
+
+/* 表单 */
+.form{margin-top:20px}
+.field-label{display:block;font-size:13px;font-weight:500;color:var(--ink-2);margin-bottom:8px}
+.input{display:block;width:100%;height:48px;padding:0 14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);font-size:16px;color:var(--ink);transition:border-color .16s,box-shadow .16s;appearance:none}
+.input::placeholder{color:var(--muted)}
+.input:hover{border-color:#c2c2c7}
+.input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,106,74,.14)}
+.input[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 3px rgba(200,16,46,.1)}
+.field-error{display:none;font-size:13px;line-height:1.55;color:var(--danger);margin-top:8px}
+.field-error[data-show="1"]{display:block}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:48px;padding:0 20px;border:1px solid transparent;border-radius:var(--r-md);background:var(--accent);color:#fff;font-size:15px;font-weight:500;white-space:nowrap;transition:background .16s,transform .12s,border-color .16s,color .16s}
+.btn:hover{background:#1a5a3e}
+.btn:active{transform:scale(.99)}
+.btn.block{width:100%;margin-top:14px}
+.btn.secondary{background:var(--surface);border-color:var(--line);color:var(--ink-2)}
+.btn.secondary:hover{background:#f5f5f7;color:var(--ink)}
+.btn.small{height:40px;font-size:14px;padding:0 16px}
+
+/* 骨架屏 */
+.sk-bar{background:#ececf0;border-radius:6px}
+.sk-wrap{animation:skpulse 1.4s ease-in-out infinite}
+@keyframes skpulse{0%,100%{opacity:1}50%{opacity:.55}}
+.sk-hr{height:1px;background:var(--line-soft);margin:20px 0}
+.sk-meta{margin-top:16px;display:flex;gap:10px}
+.sk-row{display:flex;gap:12px;align-items:flex-start;margin-top:16px}
+.sk-dot{width:11px;height:11px;border-radius:50%;background:#ececf0;flex:0 0 auto;margin-top:5px}
+
+/* 状态卡 */
+.state{display:flex;gap:14px;align-items:flex-start}
+.state-icon{width:40px;height:40px;flex:0 0 auto;display:grid;place-items:center;border-radius:var(--r-md);background:var(--accent-soft);color:var(--accent)}
+.state-icon svg{width:20px;height:20px}
+.state-icon.neutral{background:#f2f2f4;color:var(--ink-2)}
+.state-icon.warn{background:var(--warn-soft);color:var(--warn)}
+.state-title{font-size:18px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
+.state-body{font-size:14.5px;color:var(--ink-2);margin-top:8px;overflow-wrap:anywhere}
+.state-code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;color:var(--ink);background:#f2f2f4;border-radius:6px;padding:1px 6px;overflow-wrap:anywhere}
+.state-detail{font-size:12px;color:var(--muted);margin-top:10px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.state-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+
+/* 成功态 */
+.head{padding-bottom:20px;border-bottom:1px solid var(--line-soft)}
+.head h1{margin-top:7px;overflow-wrap:anywhere}
+.head-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px;min-width:0}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:var(--r-md);font-size:12px;font-weight:500;white-space:nowrap}
+.badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge.ok{background:var(--accent-soft);color:var(--accent)}
+.badge.done{background:#f2f2f4;color:var(--ink-2)}
+.code{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;min-width:0;max-width:100%;font-size:13px;color:var(--muted)}
+.code span{flex:0 0 auto;white-space:nowrap}
+.code b{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:500;color:var(--ink);letter-spacing:.01em;overflow-wrap:anywhere;min-width:0}
+.mini{height:26px;padding:0 9px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink-2);font-size:12px;transition:background .16s,color .16s,border-color .16s}
+.mini:hover{background:#f5f5f7;color:var(--ink)}
+.sec{margin-top:24px}
+.sec-title{font-size:12px;font-weight:600;letter-spacing:.05em;color:var(--muted);margin-bottom:10px}
+.base-name{font-size:16px;font-weight:500;overflow-wrap:anywhere}
+.base-addr{display:flex;gap:7px;align-items:flex-start;font-size:14px;color:var(--ink-2);margin-top:7px;line-height:1.55}
+.base-addr svg{width:15px;height:15px;flex:0 0 auto;margin-top:3px;color:var(--muted)}
+.base-addr span{overflow-wrap:anywhere}
+.facts{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line-soft)}
+.fact{padding:14px 14px 14px 0;border-bottom:1px solid var(--line-soft);min-width:0}
+.fact:nth-child(even){border-left:1px solid var(--line-soft);padding-left:16px;padding-right:0}
+/* 第三项（数量）独占一行，收掉多余的竖线与下边线，保持两列分隔对称 */
+.fact:last-child{grid-column:1 / -1;border-bottom:0;border-left:0;padding:14px 0 2px}
+.fact dt{font-size:12px;color:var(--muted);margin-bottom:5px}
+.fact dd{font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tl{position:relative;margin-top:4px}
+.tl::before{content:"";position:absolute;left:5px;top:7px;bottom:12px;width:1px;background:var(--line-soft)}
+.tl-item{position:relative;padding:0 0 22px 25px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:"";position:absolute;left:0;top:7px;width:11px;height:11px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line)}
+.tl-item.first::before{border-color:var(--accent);background:var(--accent)}
+.tl-title{font-size:15px;font-weight:600;line-height:1.45;overflow-wrap:anywhere}
+.tl-desc{font-size:14px;color:var(--ink-2);margin-top:4px;overflow-wrap:anywhere}
+.tl-meta{display:flex;flex-wrap:wrap;gap:7px;font-size:12px;color:var(--muted);margin-top:7px;font-variant-numeric:tabular-nums}
+.tl-meta .sep{color:var(--line)}
+
+/* 页脚 */
+.site-foot{max-width:720px;margin:0 auto;padding:18px 20px 48px}
+.site-foot p{font-size:12px;line-height:1.75;color:var(--muted);overflow-wrap:anywhere}
+.site-foot .gen{margin-top:4px;font-variant-numeric:tabular-nums}
+.site-foot .foot-links{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:14px}
+.site-foot a,.site-foot button{font-size:13px;color:var(--accent);background:none;border:0;padding:0}
+.site-foot button:hover,.site-foot a:hover{text-decoration:underline}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/" aria-label="田序 产品溯源">
+      <img class="brand-mark" src="/assets/logo-mark.png" alt="" width="26" height="26">
+      <span class="brand-name">田序</span>
+      <span class="brand-sub">产品溯源</span>
+    </a>
+    <a class="topbar-back" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.5 6 8.5 12l6 6"/></svg>
+      <span>返回管理台</span>
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="view" aria-live="polite" aria-atomic="false"></div>
+</main>
+
+<footer class="site-foot" id="siteFoot" hidden></footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var view = document.getElementById('view');
+  var foot = document.getElementById('siteFoot');
+  var currentCode = '';
+  var controller = null;
+
+  var RE_CODE = /^[A-Za-z0-9_-]{1,40}$/;
+  var ICON = {
+    search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.4"/><path d="M15.8 15.8 20 20"/></svg>',
+    alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.7 4.6 3.8 17a1.5 1.5 0 0 0 1.3 2.3h13.8a1.5 1.5 0 0 0 1.3-2.3L13.3 4.6a1.5 1.5 0 0 0-2.6 0Z"/><path d="M12 9.4v4"/><path d="M12 16.3v.2"/></svg>',
+    none: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.4"/><path d="M9.3 9.3 14.7 14.7M14.7 9.3 9.3 14.7"/></svg>',
+    pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20.6c3.6-4 5.7-6.8 5.7-9.6a5.7 5.7 0 1 0-11.4 0c0 2.8 2.1 5.6 5.7 9.6Z"/><circle cx="12" cy="10.7" r="2.1"/></svg>'
+  };
+
+  /* ---------- 工具 ---------- */
+  function esc(v) {
+    return String(v === null || v === undefined ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function blank(v) {
+    return v === null || v === undefined || String(v).trim() === '';
+  }
+  function or(v, alt) {
+    return blank(v) ? alt : v;
+  }
+  function pad2(n) {
+    return n < 10 ? '0' + n : String(n);
+  }
+  function hasZone(s) {
+    return /(Z|[+-][0-9]{2}:?[0-9]{2})$/.test(s);
+  }
+  function fmtDate(v) {
+    if (blank(v)) return '';
+    var s = String(v).trim();
+    var m = s.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})/);
+    if (m && !hasZone(s)) return m[1] + '-' + m[2] + '-' + m[3];
+    var d = new Date(s);
+    if (isNaN(d.getTime())) return m ? m[1] + '-' + m[2] + '-' + m[3] : '';
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+  function fmtDateTime(v) {
+    if (blank(v)) return '';
+    var s = String(v).trim();
+    var m = s.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ T]([0-9]{2}):([0-9]{2})/);
+    if (m && !hasZone(s)) return m[1] + '-' + m[2] + '-' + m[3] + ' ' + m[4] + ':' + m[5];
+    var d = m ? new Date(s) : new Date(s);
+    if (isNaN(d.getTime())) return m ? m[1] + '-' + m[2] + '-' + m[3] + ' ' + m[4] + ':' + m[5] : fmtDate(s);
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  }
+  function fmtNum(v) {
+    if (blank(v)) return '';
+    var n = Number(v);
+    if (!isFinite(n)) return String(v);
+    var s = String(n);
+    var neg = s.charAt(0) === '-';
+    if (neg) s = s.slice(1);
+    var dot = s.indexOf('.');
+    var intPart = dot < 0 ? s : s.slice(0, dot);
+    var decPart = dot < 0 ? '' : s.slice(dot);
+    var out = '';
+    for (var i = 0; i < intPart.length; i++) {
+      out += intPart.charAt(i);
+      var remain = intPart.length - i - 1;
+      if (remain > 0 && remain % 3 === 0) out += ',';
+    }
+    return (neg ? '-' : '') + out + decPart;
+  }
+  function focusEl(el) {
+    if (!el || !el.focus) return;
+    try { el.focus({ preventScroll: false }); } catch (e) { el.focus(); }
+  }
+
+  /* ---------- 状态切换 ---------- */
+  function showFooter(htmlOrNull) {
+    if (!htmlOrNull) {
+      foot.hidden = true;
+      foot.innerHTML = '';
+      return;
+    }
+    foot.innerHTML = htmlOrNull;
+    foot.hidden = false;
+  }
+  function shell(inner) {
+    return '<div class="card">' + inner + '</div>';
+  }
+  function sk(w, h, extra) {
+    return '<div class="sk-bar" style="width:' + w + ';height:' + h + 'px' + (extra ? ';' + extra : '') + '"></div>';
+  }
+
+  /* ---------- 1 初始 / 引导（含输入为空） ---------- */
+  function renderQuery(opts) {
+    opts = opts || {};
+      showFooter(null);
+    var errorText = opts.error || '';
+    var headline = opts.headline || '查询产品溯源';
+    var lede = opts.lede || '扫描产品包装上的二维码，或在下方输入溯源码，查看该批次从入库到采收的生产记录。';
+    var prefill = opts.prefill || '';
+    var html = ''
+      + '<p class="eyebrow">消费者查询</p>'
+      + '<h1>' + esc(headline) + '</h1>'
+      + '<p class="lede">' + esc(lede) + '</p>'
+      + '<form class="form" id="traceForm" novalidate>'
+      +   '<label class="field-label" for="codeInput">溯源码</label>'
+      +   '<input class="input" id="codeInput" name="code" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="40" placeholder="例如 DEMO-20260901-01" value="' + esc(prefill) + '" aria-describedby="codeHint codeErr"' + (errorText ? ' aria-invalid="true"' : '') + '>'
+      +   '<p class="field-error" id="codeErr" data-show="' + (errorText ? '1' : '0') + '">' + esc(errorText) + '</p>'
+      +   '<button class="btn block" type="submit">查询溯源记录</button>'
+      + '</form>'
+      + '<p class="note" id="codeHint">溯源码由字母、数字、短横线和下划线组成，长度 1 至 40 位，印在产品包装标签上。</p>'
+      + '<div class="demo-row"><span>没有现成的溯源码？</span><button class="mini" type="button" data-act="demo">试用演示批次</button></div>';
+    view.innerHTML = shell(html);
+    document.title = '产品溯源 · 田序';
+    if (opts.focus) focusEl(document.getElementById('codeInput'));
+  }
+
+  /* ---------- 2 加载中（骨架屏） ---------- */
+  function renderLoading() {
+      showFooter(null);
+    var rows = '';
+    for (var i = 0; i < 3; i++) {
+      rows += '<div class="sk-row"><div class="sk-dot"></div><div style="flex:1;min-width:0">'
+        + sk('62%', 13, 'margin-bottom:9px')
+        + sk('88%', 10, 'margin-bottom:8px')
+        + sk('38%', 10)
+        + '</div></div>';
+    }
+    var html = ''
+      + '<div class="sk-wrap" aria-hidden="true">'
+      +   sk('26%', 10, 'margin-bottom:14px')
+      +   sk('54%', 26, 'margin-bottom:16px')
+      +   '<div class="sk-meta">' + sk('92px', 22, 'border-radius:12px') + sk('150px', 22) + '</div>'
+      +   '<div class="sk-hr"></div>'
+      +   sk('22%', 10, 'margin-bottom:12px')
+      +   sk('52%', 14, 'margin-bottom:9px')
+      +   sk('74%', 14)
+      +   '<div class="sk-hr"></div>'
+      +   sk('30%', 10, 'margin-bottom:18px')
+      +   rows
+      + '</div>'
+      + '<p class="sr-only">正在查询溯源记录，请稍候。</p>';
+    view.innerHTML = shell(html);
+  }
+
+  /* ---------- 3 空态：该码没有记录 ---------- */
+  function renderNoRecord(code) {
+      showFooter(null);
+    var html = ''
+      + '<div class="state">'
+      +   '<span class="state-icon neutral">' + ICON.search + '</span>'
+      +   '<div>'
+      +     '<h1 class="state-title" tabindex="-1">该溯源码没有记录</h1>'
+      +     '<p class="state-body">溯源码 <span class="state-code">' + esc(code) + '</span> 目前没有对应的批次数据。请确认代码与包装标签完全一致，或向供货方核实该批次。</p>'
+      +   '</div>'
+      + '</div>'
+      + '<div class="state-actions">'
+      +   '<button class="btn small" type="button" data-act="again">重新输入溯源码</button>'
+      +   '<a class="btn small secondary" href="/">返回管理台</a>'
+      + '</div>';
+    view.innerHTML = shell(html);
+    focusEl(view.querySelector('.state-title'));
+  }
+
+  /* ---------- 4 异常 ---------- */
+  function humanError(msg) {
+    var s = String(msg || '').trim();
+    if (!s) return '';
+    if (/failed to fetch|networkerror|load failed|network request failed/i.test(s)) return '网络连接失败';
+    if (/timeout|timed out/i.test(s)) return '请求超时';
+    if (/^HTTP [0-9]{3}$/.test(s)) return '服务返回 ' + s.slice(5) + ' 错误';
+    if (/^[\x20-\x7e]*$/.test(s)) return '请求未完成';
+    return s.slice(0, 120);
+  }
+  function renderError(detail) {
+      showFooter(null);
+    detail = humanError(detail);
+    var html = ''
+      + '<div class="state">'
+      +   '<span class="state-icon warn">' + ICON.alert + '</span>'
+      +   '<div>'
+      +     '<h1 class="state-title" tabindex="-1">查询暂时不可用</h1>'
+      +     '<p class="state-body">没能连接到溯源服务，可能是网络不稳定或服务正在维护。请稍后重新加载。</p>'
+      +     (detail ? '<p class="state-detail">错误信息：' + esc(detail) + '</p>' : '')
+      +   '</div>'
+      + '</div>'
+      + '<div class="state-actions">'
+      +   '<button class="btn small" type="button" data-act="retry">重新加载</button>'
+      +   '<button class="btn small secondary" type="button" data-act="again">换一个溯源码</button>'
+      + '</div>';
+    view.innerHTML = shell(html);
+    focusEl(view.querySelector('.state-title'));
+  }
+
+  /* ---------- 5 不存在（HTTP 404） ---------- */
+  function renderNotFound(code) {
+      showFooter(null);
+    var html = ''
+      + '<div class="state">'
+      +   '<span class="state-icon neutral">' + ICON.none + '</span>'
+      +   '<div>'
+      +     '<h1 class="state-title" tabindex="-1">溯源码不存在</h1>'
+      +     '<p class="state-body">没有找到溯源码 <span class="state-code">' + esc(code) + '</span> 对应的批次。请逐位核对包装标签上的代码，注意区分数字 0 与字母 O。</p>'
+      +   '</div>'
+      + '</div>'
+      + '<div class="state-actions">'
+      +   '<button class="btn small" type="button" data-act="again">重新输入溯源码</button>'
+      +   '<a class="btn small secondary" href="/">返回管理台</a>'
+      + '</div>';
+    view.innerHTML = shell(html);
+    focusEl(view.querySelector('.state-title'));
+  }
+
+  /* ---------- 6 成功 ---------- */
+  function statusBadge(status) {
+    var s = String(status || '').toLowerCase();
+    if (s === 'active' || s === 'ongoing' || s === 'running' || s === 'in_progress' || s === '进行中') {
+      return '<span class="badge ok"><span class="dot"></span>进行中</span>';
+    }
+    if (s === 'completed' || s === 'done' || s === 'finished' || s === 'closed' || s === '已完成') {
+      return '<span class="badge done">已完成</span>';
+    }
+    return blank(status) ? '' : '<span class="badge done">' + esc(status) + '</span>';
+  }
+  function eventSort(a, b) {
+    var ka = String(or(a.event_date, '')) + ' ' + String(or(a.created_at, '')) + ' ' + String(a.id || 0).padStart(6, '0');
+    var kb = String(or(b.event_date, '')) + ' ' + String(or(b.created_at, '')) + ' ' + String(b.id || 0).padStart(6, '0');
+    return ka < kb ? -1 : (ka > kb ? 1 : 0);
+  }
+  function renderSuccess(data, code) {
+      var b = data.batch || {};
+    var events = (data.events || []).slice().sort(eventSort);
+    var product = or(b.mushroom_type, '未标注产品');
+    var batchCode = or(b.code, code);
+    var baseName = or(b.base_name, '');
+    var baseAddr = or(b.base_address, '');
+    var genTime = fmtDateTime(new Date());
+    var intro = '';
+    if (batchCode) {
+      intro = ''
+        + '<span class="code"><span>批次</span><b>' + esc(batchCode) + '</b></span>'
+        + '<button class="mini" type="button" data-act="copy" data-code="' + esc(batchCode) + '">复制</button>';
+    }
+    var base = baseName
+      ? '<p class="base-name">' + esc(baseName) + '</p>'
+      : '<p class="base-name" style="color:var(--muted);font-weight:400">站点信息未记录</p>';
+    if (baseAddr) {
+      base += '<p class="base-addr">' + ICON.pin + '<span>' + esc(baseAddr) + '</span></p>';
+    }
+    var timeline = '';
+    if (events.length) {
+      timeline = '<ol class="tl">';
+      events.forEach(function (e, i) {
+        var title = or(e.title, '生产记录');
+        var desc = or(e.description, or(e.event_type, ''));
+        var meta = '';
+        if (!blank(e.operator)) meta += '<span>' + esc(e.operator) + '</span>';
+        var when = fmtDateTime(or(e.created_at, or(e.event_date, '')));
+        if (when) meta += (meta ? '<span class="sep">·</span>' : '') + '<span>' + esc(when) + '</span>';
+        timeline += '<li class="tl-item' + (i === 0 ? ' first' : '') + '">'
+          + '<p class="tl-title">' + esc(title) + '</p>'
+          + (desc ? '<p class="tl-desc">' + esc(desc) + '</p>' : '')
+          + (meta ? '<p class="tl-meta">' + meta + '</p>' : '')
+          + '</li>';
+      });
+      timeline += '</ol>';
+    } else {
+      timeline = '<p class="note">该批次还没有生产记录。</p>';
+    }
+    var html = ''
+      + '<div class="head">'
+      +   '<p class="eyebrow">产品溯源记录</p>'
+      +   '<h1 id="traceTitle" tabindex="-1">' + esc(product) + '</h1>'
+      +   '<div class="head-meta">' + statusBadge(b.status) + intro + '</div>'
+      + '</div>'
+      + '<section class="sec">'
+      +   '<h2 class="sec-title">生产基地</h2>'
+      +   base
+      + '</section>'
+      + '<section class="sec">'
+      +   '<h2 class="sec-title">批次数据</h2>'
+      +   '<dl class="facts">'
+      +     '<div class="fact"><dt>入库日期</dt><dd>' + esc(or(fmtDate(b.start_date), '未记录')) + '</dd></div>'
+      +     '<div class="fact"><dt>预计采收</dt><dd>' + esc(or(fmtDate(b.expected_harvest_date), '未记录')) + '</dd></div>'
+      +     '<div class="fact"><dt>数量（株 / 棒）</dt><dd>' + (blank(b.quantity) ? '未记录' : esc(fmtNum(b.quantity))) + '</dd></div>'
+      +   '</dl>'
+      + '</section>'
+      + '<section class="sec">'
+      +   '<h2 class="sec-title">生产记录' + (events.length ? ' · 共 ' + events.length + ' 条' : '') + '</h2>'
+      +   timeline
+      + '</section>';
+    view.innerHTML = shell(html);
+    document.title = product + ' · 产品溯源 · 田序';
+    showFooter(
+      '<p>以上记录来自生产管理后台数据库，未做人工修饰。批次信息由生产人员在对应作业环节录入。</p>'
+      + '<p class="gen">页面生成时间：' + esc(genTime) + '</p>'
+      + '<p class="foot-links"><a href="/">返回管理台</a><button type="button" data-act="again">查询其他溯源码</button></p>'
+    );
+    focusEl(document.getElementById('traceTitle'));
+  }
+
+  /* ---------- 网络请求 ---------- */
+  function setBusy(on) {
+    view.setAttribute('aria-busy', on ? 'true' : 'false');
+  }
+  function historySetCode(code) {
+    try {
+      var u = new URL(location.href);
+      if (code) u.searchParams.set('code', code);
+      else u.searchParams.delete('code');
+      history.replaceState(null, '', u.pathname + (u.search ? u.search : '') + (u.hash ? u.hash : ''));
+    } catch (e) { /* file:// 等环境忽略 */ }
+  }
+  function runQuery(code) {
+    currentCode = code;
+    historySetCode(code);
+    if (controller) { try { controller.abort(); } catch (e) {} }
+    controller = typeof AbortController === 'function' ? new AbortController() : null;
+    setBusy(true);
+    renderLoading();
+    var opts = { headers: { Accept: 'application/json' }, cache: 'no-store' };
+    if (controller) opts.signal = controller.signal;
+    fetch('/api/trace/' + encodeURIComponent(code), opts)
+      .then(function (res) {
+        if (res.status === 404) { renderNotFound(code); return null; }
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (json) {
+        if (json === null) return;
+        if (!json || typeof json !== 'object') throw new Error('返回内容为空');
+        if (json.code !== 0) {
+          if (json.code === 404) { renderNotFound(code); return; }
+          throw new Error(json.message || '查询失败');
+        }
+        var data = json.data;
+        if (!data || !data.batch || blank(data.batch.code)) { renderNoRecord(code); return; }
+        renderSuccess(data, code);
+      })
+      .catch(function (err) {
+        if (err && err.name === 'AbortError') return;
+        renderError(err && err.message ? err.message : '网络请求失败');
+      })
+      .then(function () { setBusy(false); });
+  }
+
+  /* ---------- 输入与地址解析 ---------- */
+  function normalizeCode(raw) {
+    var s = raw === null || raw === undefined ? '' : String(raw).trim();
+    if (!s) return { code: '', reason: 'empty' };
+    try { s = decodeURIComponent(s); } catch (e) { /* 保留原值 */ }
+    s = String(s).trim();
+    if (!RE_CODE.test(s)) return { code: s, reason: 'invalid' };
+    return { code: s, reason: '' };
+  }
+  function codeFromLocation() {
+    var qs = '';
+    try { qs = new URLSearchParams(location.search).get('code') || ''; } catch (e) { qs = ''; }
+    if (qs.trim()) return qs.trim();
+    var path = location.pathname || '';
+    var i = path.indexOf('/trace/');
+    if (i >= 0) {
+      var rest = path.slice(i + 7).split('/')[0];
+      if (rest) {
+        try { return decodeURIComponent(rest); } catch (e) { return rest; }
+      }
+    }
+    return '';
+  }
+
+  /* ---------- 事件 ---------- */
+  document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (!form || form.id !== 'traceForm') return;
+    e.preventDefault();
+    var input = document.getElementById('codeInput');
+    var parsed = normalizeCode(input ? input.value : '');
+    if (parsed.reason === 'empty') {
+      renderQuery({ headline: '还没有输入溯源码', error: '请输入溯源码后再查询。', lede: '请先输入产品包装标签上的溯源码。', focus: true });
+      return;
+    }
+    if (parsed.reason === 'invalid') {
+      renderQuery({ headline: '溯源码格式不正确', error: '溯源码只能包含字母、数字、短横线和下划线，长度 1 至 40 位。', prefill: parsed.code, focus: true });
+      return;
+    }
+    runQuery(parsed.code);
+  });
+
+  document.addEventListener('click', function (e) {
+    var el = e.target;
+    var act = el && el.closest ? el.closest('[data-act]') : null;
+    if (!act) return;
+    var kind = act.getAttribute('data-act');
+    if (kind === 'again') {
+      e.preventDefault();
+      currentCode = '';
+      historySetCode('');
+      renderQuery({ headline: '查询产品溯源', focus: true });
+      return;
+    }
+    if (kind === 'retry') {
+      e.preventDefault();
+      if (currentCode) runQuery(currentCode);
+      else location.reload();
+      return;
+    }
+    if (kind === 'demo') {
+      e.preventDefault();
+      runQuery('DEMO-20260901-01');
+      return;
+    }
+    if (kind === 'copy') {
+      e.preventDefault();
+      var text = act.getAttribute('data-code') || currentCode || '';
+      var done = function (ok) {
+        act.textContent = ok ? '已复制' : '复制失败';
+        window.setTimeout(function () { act.textContent = '复制'; }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }).catch(function () { done(false); });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-100px';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+        document.body.removeChild(ta);
+        done(ok);
+      }
+    }
+  });
+
+  /* ---------- 启动 ---------- */
+  var initial = codeFromLocation();
+  if (!initial) {
+    renderQuery({});
+  } else {
+    var parsed = normalizeCode(initial);
+    if (parsed.reason === '') {
+      runQuery(parsed.code);
+    } else if (parsed.reason === 'invalid') {
+      renderQuery({ headline: '溯源码格式不正确', error: '链接中的溯源码只能包含字母、数字、短横线和下划线，长度 1 至 40 位。', prefill: initial });
+    } else {
+      renderQuery({});
+    }
+  }
+})();
+</script>
+</body>
+</html>

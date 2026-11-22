@@ -1,0 +1,308 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" fill="none" role="img" aria-labelledby="garden-title garden-description">
+  <title id="garden-title">从手机里生长出来的田园</title>
+  <desc id="garden-description">先展示正面手机，屏幕包含育苗、生长、环境监测、采收、分级和出售功能。手机倾斜后，屏幕化作田地，幼苗生长、叶片展开、温室升起，收成箱落地弹起两次再停稳。每轮七秒，完整田园短暂停留后回到手机。</desc>
+  <style>
+    svg { --cycle: 7s; }
+    .phone-morph { transform: matrix(1.191667,.645833,-.764444,.422222,413,108); transform-origin: 0 0; animation: phone-morph var(--cycle) cubic-bezier(.4,0,.2,1) infinite; }
+    .phone-frame { fill: #608068; animation: phone-frame var(--cycle) ease-in-out infinite; }
+    .phone-screen { fill: #315a3e; animation: phone-screen var(--cycle) ease-in-out infinite; }
+    .phone-ui { opacity: 0; animation: phone-ui var(--cycle) ease-in-out infinite; }
+    .phone-depth { opacity: 1; animation: phone-depth var(--cycle) ease-in-out infinite; }
+    .phone-opening-shadow { opacity: 0; animation: phone-opening-shadow var(--cycle) ease-in-out infinite; }
+    .garden-world { opacity: 1; animation: garden-world var(--cycle) ease-in-out infinite; }
+    .feature-highlight { opacity: 0; animation: feature-highlight var(--cycle) ease-in-out var(--feature-delay,0s) infinite both; }
+    .phone-action { opacity: 0; animation: phone-action var(--cycle) ease-in-out infinite; }
+    .ui-chart { stroke-dasharray: 1; animation: ui-chart var(--cycle) ease-in-out infinite; }
+    .field-row { stroke-dasharray: 1; stroke-dashoffset: 0; animation: field-reveal var(--cycle) ease-in-out infinite; }
+    .sprout-grow { transform-box: fill-box; transform-origin: 50% 100%; animation: sprout-grow var(--cycle) cubic-bezier(.2,.75,.3,1) var(--delay,0s) infinite both; }
+    .sprout-sway { transform-box: fill-box; transform-origin: 50% 100%; animation: sprout-sway 3.8s ease-in-out var(--delay,0s) infinite; }
+    .leaf-left { transform-box: fill-box; transform-origin: 100% 100%; animation: leaf-left var(--cycle) ease-out var(--delay,0s) infinite both; }
+    .leaf-right { transform-box: fill-box; transform-origin: 0% 100%; animation: leaf-right var(--cycle) ease-out var(--delay,0s) infinite both; }
+    .greenhouse-grow { transform-box: fill-box; transform-origin: 50% 100%; animation: greenhouse-grow var(--cycle) cubic-bezier(.2,.75,.3,1) infinite; }
+    .greenhouse-line { stroke-dasharray: 1; stroke-dashoffset: 0; animation: greenhouse-line var(--cycle) ease-in-out infinite; }
+    .glass-shine { animation: glass-shine 6s ease-in-out infinite; }
+    .parcel-drop { transform-box: fill-box; transform-origin: 50% 100%; animation: parcel-drop var(--cycle) linear infinite; }
+    .parcel-shadow { transform-box: fill-box; transform-origin: center; animation: parcel-shadow var(--cycle) linear infinite; }
+    .landing-ring { transform-box: fill-box; transform-origin: center; animation: landing-ring var(--cycle) linear infinite; }
+    .sun-enter { transform-box: fill-box; transform-origin: center; animation: sun-enter var(--cycle) ease-in-out infinite; }
+    .sun-rays { transform-box: fill-box; transform-origin: center; animation: sun-rays 24s linear infinite; }
+    .sun-core { animation: sun-glow 4s ease-in-out infinite; }
+    .orbit { animation: orbit-breathe 7s ease-in-out infinite; }
+    .mote { animation: mote-float 4.6s ease-in-out var(--delay,0s) infinite; }
+    @keyframes phone-morph {
+      0%, 19% { transform: matrix(1,0,0,1,260,32); }
+      33%, 92% { transform: matrix(1.191667,.645833,-.764444,.422222,413,108); }
+      100% { transform: matrix(1,0,0,1,260,32); }
+    }
+    @keyframes phone-frame {
+      0%, 19%, 100% { fill: #d0dbbf; }
+      33%, 92% { fill: #608068; }
+    }
+    @keyframes phone-screen {
+      0%, 20%, 100% { fill: #f4f6eb; }
+      33%, 92% { fill: #315a3e; }
+    }
+    @keyframes phone-ui {
+      0%, 20%, 100% { opacity: 1; }
+      30%, 94% { opacity: 0; }
+    }
+    @keyframes phone-depth {
+      0%, 29%, 100% { opacity: 0; }
+      33%, 92% { opacity: 1; }
+    }
+    @keyframes phone-opening-shadow {
+      0%, 20%, 100% { opacity: .3; }
+      32%, 93% { opacity: 0; }
+    }
+    @keyframes garden-world {
+      0%, 29%, 98%, 100% { opacity: 0; }
+      35%, 92% { opacity: 1; }
+    }
+    @keyframes feature-highlight {
+      0%, 3%, 12%, 100% { opacity: 0; }
+      6%, 9% { opacity: 1; }
+    }
+    @keyframes phone-action {
+      0%, 10% { opacity: 0; transform: translate(119px,216px) scale(.65); }
+      12% { opacity: .8; transform: translate(186px,216px) scale(1); }
+      15% { opacity: .35; transform: translate(186px,216px) scale(1.55); }
+      17% { opacity: .8; transform: translate(119px,280px) scale(.85); }
+      19%, 100% { opacity: 0; transform: translate(119px,280px) scale(1.6); }
+    }
+    @keyframes ui-chart {
+      0% { stroke-dashoffset: 1; }
+      13%, 92% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: 1; }
+    }
+    @keyframes field-reveal {
+      0%, 29% { stroke-dashoffset: 1; opacity: 0; }
+      37%, 93% { stroke-dashoffset: 0; opacity: 1; }
+      100% { stroke-dashoffset: 1; opacity: 0; }
+    }
+    @keyframes sprout-grow {
+      0%, 32% { opacity: 0; transform: scale(.06,0); }
+      36% { opacity: 1; transform: scale(.34,.3); }
+      45% { opacity: 1; transform: scale(1.03,1.06); }
+      48%, 92% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(.75,.7); }
+    }
+    @keyframes sprout-sway {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(2.5deg); }
+    }
+    @keyframes leaf-left {
+      0%, 36% { opacity: 0; transform: rotate(55deg) scale(.05); }
+      46%, 93% { opacity: 1; transform: rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: rotate(12deg) scale(.8); }
+    }
+    @keyframes leaf-right {
+      0%, 38% { opacity: 0; transform: rotate(-55deg) scale(.05); }
+      48%, 93% { opacity: 1; transform: rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: rotate(-12deg) scale(.8); }
+    }
+    @keyframes greenhouse-grow {
+      0%, 43% { opacity: 0; transform: translateY(12px) scaleY(.02); }
+      46% { opacity: .5; }
+      55% { opacity: 1; transform: translateY(0) scaleY(1.025); }
+      58%, 93% { opacity: 1; transform: translateY(0) scaleY(1); }
+      100% { opacity: 0; transform: translateY(10px) scaleY(.95); }
+    }
+    @keyframes greenhouse-line {
+      0%, 43% { stroke-dashoffset: 1; }
+      58%, 100% { stroke-dashoffset: 0; }
+    }
+    @keyframes glass-shine {
+      0%, 15% { opacity: 0; transform: translateX(-90px); }
+      40% { opacity: .35; }
+      75%, 100% { opacity: 0; transform: translateX(100px); }
+    }
+    @keyframes parcel-drop {
+      0%, 58% { opacity: 0; transform: translateY(-220px) rotate(-12deg); }
+      59% { opacity: 1; transform: translateY(-220px) rotate(-12deg); animation-timing-function: cubic-bezier(.45,0,.85,.5); }
+      65% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1.1,.88); animation-timing-function: cubic-bezier(.12,.7,.35,1); }
+      69% { opacity: 1; transform: translateY(-48px) rotate(5deg) scale(.97,1.04); animation-timing-function: cubic-bezier(.45,0,.85,.5); }
+      72% { opacity: 1; transform: translateY(0) rotate(-2deg) scale(1.06,.93); animation-timing-function: cubic-bezier(.12,.7,.35,1); }
+      75% { opacity: 1; transform: translateY(-19px) rotate(-3deg) scale(.99,1.02); animation-timing-function: cubic-bezier(.45,0,.85,.5); }
+      78% { opacity: 1; transform: translateY(0) rotate(1deg) scale(1.03,.97); }
+      80%, 94% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translateY(0) rotate(0deg) scale(.96); }
+    }
+    @keyframes parcel-shadow {
+      0%, 58% { opacity: 0; transform: scale(.45); }
+      59% { opacity: .1; transform: scale(.45); }
+      65% { opacity: .38; transform: scale(1.1); }
+      69% { opacity: .12; transform: scale(.65); }
+      72% { opacity: .32; transform: scale(1.04); }
+      75% { opacity: .18; transform: scale(.85); }
+      78%, 94% { opacity: .28; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1); }
+    }
+    @keyframes landing-ring {
+      0%, 64% { opacity: 0; transform: scale(.6); }
+      65% { opacity: .5; transform: scale(.8); }
+      68% { opacity: 0; transform: scale(1.6); }
+      71% { opacity: 0; transform: scale(.6); }
+      72% { opacity: .35; transform: scale(.8); }
+      74% { opacity: 0; transform: scale(1.4); }
+      77% { opacity: 0; transform: scale(.6); }
+      78% { opacity: .2; transform: scale(.8); }
+      81%, 100% { opacity: 0; transform: scale(1.25); }
+    }
+    @keyframes sun-enter {
+      0%, 36% { opacity: 0; transform: translateY(10px) scale(.6); }
+      46%, 94% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-5px) scale(.95); }
+    }
+    @keyframes sun-rays { to { transform: rotate(360deg); } }
+    @keyframes sun-glow { 0%, 100% { opacity: .7; } 50% { opacity: 1; } }
+    @keyframes orbit-breathe { 0%, 100% { opacity: .14; } 50% { opacity: .3; } }
+    @keyframes mote-float { 0%, 100% { opacity: .3; transform: translateY(0); } 50% { opacity: .9; transform: translateY(-9px); } }
+    svg[data-paused] * { animation-play-state: paused !important; }
+    svg[data-still] * { animation: none !important; }
+    svg[data-still] .field-row, svg[data-still] .greenhouse-line { stroke-dasharray: none; }
+    svg[data-phone] * { animation: none !important; }
+    svg[data-phone] .phone-morph { transform: matrix(1,0,0,1,260,32); }
+    svg[data-phone] .phone-frame { fill: #d0dbbf; }
+    svg[data-phone] .phone-screen { fill: #f4f6eb; }
+    svg[data-phone] .phone-ui { opacity: 1; }
+    svg[data-phone] .phone-opening-shadow { opacity: .3; }
+    svg[data-phone] .phone-depth, svg[data-phone] .garden-world { opacity: 0; }
+    svg[data-phone] .ui-chart { stroke-dasharray: none; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } .field-row, .greenhouse-line { stroke-dasharray: none; } }
+  </style>
+  <defs>
+    <pattern id="garden-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r=".65" fill="#b7cba4" opacity=".18"/></pattern>
+    <clipPath id="garden-screen"><rect x="13" y="17" width="214" height="416" rx="23" transform="matrix(1.191667 .645833 -.764444 .422222 413 108)"/></clipPath>
+    <clipPath id="garden-glass"><path d="M184 246V190C186 159 216 145 242 161L452 52C475 39 503 53 505 83V196L295 307Z"/></clipPath>
+    <clipPath id="phone-screen-clip"><rect x="13" y="17" width="214" height="416" rx="23"/></clipPath>
+  </defs>
+  <rect width="760" height="540" fill="url(#garden-dots)"/>
+  <g class="garden-world"><g class="orbit" stroke="#a8c394" stroke-width="1" opacity=".22">
+    <ellipse cx="382" cy="323" rx="355" ry="160"/>
+    <ellipse cx="382" cy="323" rx="320" ry="139"/>
+    <ellipse cx="382" cy="323" rx="286" ry="118"/>
+  </g>
+  <ellipse cx="389" cy="449" rx="238" ry="39" fill="#102c20" opacity=".21"/>
+  </g>
+  <ellipse class="phone-opening-shadow" cx="380" cy="503" rx="105" ry="15" fill="#102c20"/>
+  <g class="phone-depth" stroke-linejoin="round">
+    <path d="M72 299 342 455Q357 463 373 455L696 283V308Q696 322 683 329L374 495Q357 505 341 496L80 351Q65 343 65 328V311Z" fill="#142f25" stroke="#4b7357" stroke-width="1.6"/>
+    <path d="M357 466 696 283V308Q696 322 683 329L374 495Q366 500 357 501Z" fill="#1a3c2c"/>
+    <path d="m208 388 48 27" stroke="#cfdbc0" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+    <path d="m151 375 35 19M113 354l19 11" stroke="#779571" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+  <g class="phone-morph">
+    <rect class="phone-frame" width="240" height="450" rx="31" stroke="#b3c49d" stroke-width="2.4"/>
+    <rect x="5" y="6" width="230" height="438" rx="27" fill="#153a29"/>
+    <rect class="phone-screen" x="13" y="17" width="214" height="416" rx="23"/>
+    <g clip-path="url(#phone-screen-clip)" class="phone-ui" font-family="Microsoft YaHei, PingFang SC, sans-serif">
+      <g fill="#244e3b" font-size="9"><text x="28" y="39">09:41</text><path d="M189 36v-4h2v4m4 0v-6h2v6m4 0v-9h2v9" stroke="#244e3b" stroke-width="1.4"/><rect x="208" y="29" width="11" height="7" rx="1.7" stroke="#244e3b"/><path d="M211 31h5v3h-5Z"/></g>
+      <rect x="29" y="53" width="27" height="27" rx="8" fill="#244e3b"/>
+      <path d="M36 65h13v10H36Zm6.5 0v10M36 70h13" stroke="#e3ebcb" stroke-width="1.2"/>
+      <path d="M42 63c-5 0-6-4-6-4 5-1 7 1 6 4Zm1 0c0-4 4-7 7-6 0 5-3 7-7 6Z" fill="#d2bd83"/>
+      <text x="64" y="65" fill="#244e3b" font-size="14" font-weight="600">田序</text><text x="64" y="78" fill="#849374" font-size="7.8">种植 · 产销 · 一体化</text>
+      <rect x="29" y="92" width="182" height="78" rx="9" fill="#244e3b"/>
+      <text x="42" y="110" fill="#c4d2ad" font-size="8.2">田间有序，收成有数</text><text x="42" y="133" fill="#f2f5e6" font-size="16" font-weight="500">今日田间</text><text x="42" y="155" fill="#cbd8b6" font-size="8.7">27 批在产</text><text x="119" y="155" fill="#d9c38c" font-size="8.7">4 批待采收</text>
+      <text x="30" y="191" fill="#355136" font-size="10.5" font-weight="600">从育苗到出售</text>
+      <g fill="#e4ebda"><rect x="29" y="201" width="54" height="58" rx="7"/><rect x="93" y="201" width="54" height="58" rx="7"/><rect x="157" y="201" width="54" height="58" rx="7"/><rect x="29" y="266" width="54" height="58" rx="7"/><rect x="93" y="266" width="54" height="58" rx="7"/><rect x="157" y="266" width="54" height="58" rx="7"/></g>
+      <g fill="#ceddb9"><rect class="feature-highlight" x="29" y="201" width="54" height="58" rx="7"/><rect class="feature-highlight" x="93" y="201" width="54" height="58" rx="7" style="--feature-delay:.13s"/><rect class="feature-highlight" x="157" y="201" width="54" height="58" rx="7" style="--feature-delay:.26s"/><rect class="feature-highlight" x="29" y="266" width="54" height="58" rx="7" style="--feature-delay:.39s"/><rect class="feature-highlight" x="93" y="266" width="54" height="58" rx="7" style="--feature-delay:.52s"/><rect class="feature-highlight" x="157" y="266" width="54" height="58" rx="7" style="--feature-delay:.65s"/></g>
+      <g stroke="#527248" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M56 231v-11m0 5c-8 1-11-5-11-9 8-1 11 4 11 9Zm0-4c0-6 5-10 11-9-1 6-6 9-11 9M49 233h14"/>
+        <path d="M120 234v-19m0 13c-7 0-10-4-11-10 8 0 11 5 11 10Zm0-5c0-7 5-11 11-11 0 7-5 11-11 11"/>
+        <circle cx="184" cy="222" r="5"/><path d="M184 212v-2m0 24v-2m-10-10h-2m24 0h-2m-17-7-2-2m18 18-2-2"/>
+        <path d="M44 286h24l-3 17H47l-3-17Zm4 0 5-8m11 8-5-8M52 291v6m8-6v6"/>
+        <path d="M109 279h9v9h-9Zm14 0h9v9h-9Zm-14 14h9v9h-9Zm15 4 3 3 6-7"/>
+        <path d="M173 287h22l-2-8h-18l-2 8Zm2 2v14h18v-14m-13 14v-9h8v9M173 287c0 5 5 5 6 1 1 4 7 4 8 0 1 4 7 4 8-1"/>
+      </g>
+      <g fill="#345333" font-size="9" text-anchor="middle"><text x="56" y="249">育苗</text><text x="120" y="249">生长</text><text x="184" y="249">成熟</text><text x="56" y="314">采收</text><text x="120" y="314">分级</text><text x="184" y="314">出售</text></g>
+      <rect x="29" y="335" width="182" height="53" rx="8" fill="#fff" stroke="#e0e6d6"/>
+      <text x="40" y="350" fill="#859378" font-size="7.8">环境监测 · 01号棚</text><text x="40" y="371" fill="#244e3b" font-size="13">24.2°C</text><text x="99" y="371" fill="#849374" font-size="8">86%</text>
+      <path class="ui-chart" pathLength="1" d="m136 371 9-7 9 2 9-11 9 5 10-5 10 3 9-8" stroke="#66875a" stroke-width="1.7"/>
+      <path d="M29 398h182" stroke="#dce4d0"/>
+      <g fill="#729064" font-size="7.2" text-anchor="middle"><text x="48" y="417">首页</text><text x="96" y="417">生产</text><text x="144" y="417">监测</text><text x="192" y="417">市场</text></g>
+      <circle class="phone-action" r="12" stroke="#c4a367" stroke-width="2.3"/>
+    </g>
+    <rect x="84" y="22" width="72" height="10" rx="5" fill="#132e22"/>
+    <circle cx="147" cy="27" r="2" fill="#608668"/>
+    <rect x="92" y="437" width="56" height="3" rx="1.5" fill="#d9e4c6" opacity=".9"/>
+  </g>
+  <g class="garden-world">
+    <g clip-path="url(#garden-screen)" stroke="#90b17a" stroke-width="8" stroke-linecap="round" opacity=".43">
+      <path class="field-row" pathLength="1" d="M125 309 430 148"/>
+      <path class="field-row" pathLength="1" d="M148 322 454 161"/>
+      <path class="field-row" pathLength="1" d="M171 335 478 174"/>
+      <path class="field-row" pathLength="1" d="M194 348 502 187"/>
+      <path class="field-row" pathLength="1" d="M217 361 526 200"/>
+      <path class="field-row" pathLength="1" d="M240 374 550 213"/>
+      <path class="field-row" pathLength="1" d="M263 387 574 226"/>
+      <path class="field-row" pathLength="1" d="M286 400 598 239"/>
+      <path class="field-row" pathLength="1" d="M309 413 622 252"/>
+      <path class="field-row" pathLength="1" d="M332 426 646 265"/>
+      <path class="field-row" pathLength="1" d="M355 439 670 278"/>
+    </g>
+  <g class="greenhouse-grow" stroke="#bed2a6" stroke-width="1.6" stroke-linejoin="round">
+    <path d="m184 246 210-109 111 59-210 111Z" fill="#a9c79b" fill-opacity=".1"/>
+    <path d="M184 246V190C186 159 216 145 242 161L295 192V307Z" fill="#b6cfa8" fill-opacity=".1"/>
+    <path d="m242 161 210-109C475 39 503 53 505 83V196L295 307V192Z" fill="#c6d9b5" fill-opacity=".1"/>
+    <path class="greenhouse-line" pathLength="1" d="M184 246V190C186 159 216 145 242 161L295 192V307M394 137V81C396 50 426 36 452 52L479 68C497 77 505 91 505 111V196"/>
+    <path class="greenhouse-line" pathLength="1" d="m184 190 210-109m-178 82 210-109M242 161 452 52M295 192 505 83M295 246l210-109" opacity=".7"/>
+    <path class="greenhouse-line" pathLength="1" d="M242 161V274M294 134V246M346 107V218M398 80V190M450 53V163" opacity=".7"/>
+    <g clip-path="url(#garden-glass)" stroke="#e4efd1" stroke-width="12" opacity=".18"><path class="glass-shine" d="m263 81 2 233m25-248 2 233"/></g>
+  </g>
+  <g transform="translate(356 366)" style="--delay:.03s"><g class="sprout-grow"><g class="sprout-sway">
+    <path d="M0 0V-34" stroke="#d1c188" stroke-width="2.5" stroke-linecap="round"/>
+    <path class="leaf-left" d="M0-17C-22-15-29-28-28-40-11-40 1-31 0-17Z" fill="#adc78e"/>
+    <path class="leaf-right" d="M0-18C-2-39 11-48 28-49 30-32 17-20 0-18Z" fill="#d2dda5"/>
+  </g></g></g>
+  <g transform="translate(414 336)" style="--delay:.08s"><g class="sprout-grow"><g class="sprout-sway">
+    <path d="M0 0V-39" stroke="#d1c188" stroke-width="2.5" stroke-linecap="round"/>
+    <path class="leaf-left" d="M0-20C-24-19-31-32-31-46-12-46 1-36 0-20Z" fill="#b8cd97"/>
+    <path class="leaf-right" d="M0-22C-1-44 12-57 29-56 30-36 17-24 0-22Z" fill="#d0dca2"/>
+  </g></g></g>
+  <g transform="translate(472 306)" style="--delay:.15s"><g class="sprout-grow"><g class="sprout-sway">
+    <path d="M0 0V-37" stroke="#d1c188" stroke-width="2.5" stroke-linecap="round"/>
+    <path class="leaf-left" d="M0-19C-21-17-28-30-29-43-11-43 1-34 0-19Z" fill="#b2cb90"/>
+    <path class="leaf-right" d="M0-20C-2-41 10-53 27-54 30-36 17-22 0-20Z" fill="#d7e2ad"/>
+  </g></g></g>
+  <g transform="translate(414 403)" style="--delay:.23s"><g class="sprout-grow"><g class="sprout-sway">
+    <path d="M0 0V-34" stroke="#d1c188" stroke-width="2.5" stroke-linecap="round"/>
+    <path class="leaf-left" d="M0-18C-23-17-29-29-30-41-11-43 1-32 0-18Z" fill="#afc98b"/>
+    <path class="leaf-right" d="M0-19C-2-39 11-50 28-51 30-33 17-20 0-19Z" fill="#d3dda3"/>
+  </g></g></g>
+  <g transform="translate(473 372)" style="--delay:.3s"><g class="sprout-grow"><g class="sprout-sway">
+    <path d="M0 0V-37" stroke="#d1c188" stroke-width="2.5" stroke-linecap="round"/>
+    <path class="leaf-left" d="M0-20C-23-18-30-30-30-44-12-44 1-33 0-20Z" fill="#c0d29b"/>
+    <path class="leaf-right" d="M0-21C-2-43 12-54 28-55 30-36 17-22 0-21Z" fill="#d6e0a7"/>
+  </g></g></g>
+  <g transform="translate(532 340)" style="--delay:.38s"><g class="sprout-grow"><g class="sprout-sway">
+    <path d="M0 0V-36" stroke="#d1c188" stroke-width="2.5" stroke-linecap="round"/>
+    <path class="leaf-left" d="M0-18C-23-17-31-29-31-43-12-43 1-32 0-18Z" fill="#afc98e"/>
+    <path class="leaf-right" d="M0-20C-2-41 10-53 28-54 30-36 17-21 0-20Z" fill="#d0dea3"/>
+  </g></g></g>
+  <g transform="translate(112 182)" style="--delay:.15s"><g class="sprout-grow"><g class="sprout-sway">
+    <path d="M0 0V-66" stroke="#a2bd88" stroke-width="2.6" stroke-linecap="round"/>
+    <path class="leaf-left" d="M0-41C-20-39-30-51-29-63-12-64 0-55 0-41Z" fill="#9fbc83"/>
+    <path class="leaf-right" d="M0-22C-1-42 10-51 28-50 26-35 16-24 0-22Z" fill="#c3d39b"/>
+  </g></g></g>
+  <g transform="translate(580 82)"><g class="sun-enter" stroke="#cbb576" stroke-width="1.7">
+    <circle class="sun-core" r="24" fill="#c4a367" fill-opacity=".045"/>
+    <g class="sun-rays"><path d="M0-41v9M29-29l-6 6M41 0h-9M29 29l-6-6M0 41v-9M-29 29l6-6M-41 0h9M-29-29l6 6"/></g>
+  </g></g>
+  <ellipse class="parcel-shadow" cx="587" cy="290" rx="40" ry="13" fill="#102f22" opacity=".28"/>
+  <ellipse class="landing-ring" cx="587" cy="290" rx="42" ry="14" stroke="#cdb577" stroke-width="1.5" opacity="0"/>
+  <g transform="translate(586 285)"><g class="parcel-drop" stroke-linejoin="round">
+    <path d="m-38-65 43-22 37 20-43 23Z" fill="#e1c98a" stroke="#e4d19f" stroke-width="1"/>
+    <path d="m-38-65 37 21V0l-37-21Z" fill="#b4945b"/>
+    <path d="m-1-44 43-23v44L-1 0Z" fill="#c5a468"/>
+    <path d="m-22-73 38 20v15" stroke="#f2e3ba" stroke-width="5"/>
+    <path d="m-38-65 37 21 43-23" stroke="#f3e5bd" stroke-width="1.1" opacity=".7"/>
+    <path d="M18-19v-10m0 3c-7 0-9-5-9-5 6-2 9 0 9 5Zm0-1c0-7 6-10 6-10 2 6-1 9-6 10Z" fill="#f4e9c5" stroke="#f4e9c5" stroke-width=".8"/>
+  </g></g>
+  <g fill="#cad9a8">
+    <circle class="mote" cx="137" cy="91" r="4.2"/>
+    <circle class="mote" cx="662" cy="126" r="3" style="--delay:-1.5s"/>
+    <circle class="mote" cx="667" cy="379" r="2.8" style="--delay:-.9s"/>
+    <circle class="mote" cx="188" cy="424" r="2" style="--delay:-2.6s"/>
+  </g>
+  </g>
+</svg>
